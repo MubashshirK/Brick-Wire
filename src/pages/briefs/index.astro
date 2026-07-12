@@ -1,0 +1,103 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import ArticleCard from '../../components/cards/ArticleCard.astro';
+
+const stories = [
+  { title: 'Airbnb Buys Manhattan Office Despite NYC Rental Crackdown', slug: 'airbnb-buys-manhattan-office', category: 'Office', date: 'July 10, 2026', excerpt: 'Airbnb\'s $81.5M acquisition of a landmark NYC office signals a long-term presence in a city with strict short-term rental laws.' },
+  { title: 'Dallas and Miami Challenge New York as US Financial Hub', slug: 'dallas-miami-financial-hub', category: 'Investments', date: 'July 10, 2026' },
+  { title: 'US Retailers Bet on Mini Products as Shoppers Scale Back', slug: 'retailers-mini-products', category: 'Retail', date: 'July 10, 2026' },
+  { title: 'Foreclosure Spike Unlocks Discounted Housing Deals For CRE', slug: 'foreclosure-spike-discounts', category: 'Industry News', date: 'July 10, 2026' },
+  { title: 'Apartment Concession Discounts Hit Record Depth in June 2026', slug: 'concession-discounts-record', category: 'Multifamily', date: 'July 10, 2026' },
+  { title: 'Industrial Leasing Surges as Occupiers Lock In Long-Term Deals', slug: 'industrial-leasing-surges', category: 'Industrial', date: 'July 8, 2026' },
+  { title: 'NYC Apartment Market Defies Headwinds With Nation\'s Tightest Vacancy', slug: 'nyc-apartment-market', category: 'Multifamily', date: 'July 7, 2026' },
+  { title: 'NYC\'s $125.8B Budget Puts Housing First', slug: 'nyc-budget-housing', category: 'Investments', date: 'July 2, 2026' },
+];
+---
+
+<PageLayout title="Latest Briefs" description="Stay up to date with the latest commercial real estate news, transactions, and trends.">
+  <section class="briefs-page section-padding">
+    <div class="container">
+      <div class="briefs-header">
+        <h1>Latest Briefs</h1>
+        <div class="briefs-filters">
+          <div class="filter-group">
+            <span class="filter-label">Markets</span>
+            <div class="filter-tags">
+              <a href="/market/national/" class="filter-tag">National</a>
+              <a href="/market/texas/" class="filter-tag">Texas</a>
+              <a href="/market/california/" class="filter-tag">California</a>
+              <a href="/market/new-york/" class="filter-tag">New York</a>
+              <a href="/market/florida/" class="filter-tag">Florida</a>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Sectors</span>
+            <div class="filter-tags">
+              <a href="/sectors/industry-news/" class="filter-tag">Industry News</a>
+              <a href="/sectors/investments/" class="filter-tag">Investments</a>
+              <a href="/sectors/multifamily/" class="filter-tag">Multifamily</a>
+              <a href="/sectors/industrial/" class="filter-tag">Industrial</a>
+              <a href="/sectors/proptech/" class="filter-tag">Proptech</a>
+              <a href="/sectors/lending/" class="filter-tag">Lending</a>
+              <a href="/sectors/office/" class="filter-tag">Office</a>
+              <a href="/sectors/retail/" class="filter-tag">Retail</a>
+              <a href="/sectors/data/" class="filter-tag">Data</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="briefs-list">
+        {stories.map(s => <ArticleCard {...s} />)}
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .briefs-header {
+    margin-bottom: 2.5rem;
+  }
+  .briefs-header h1 {
+    font-family: var(--font-heading);
+    font-size: var(--fs-heading-1);
+    margin-bottom: 1.5rem;
+  }
+  .briefs-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+    min-width: 60px;
+  }
+  .filter-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-tag {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-body);
+    background: var(--color-bg-subtle);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  .filter-tag:hover {
+    background: var(--color-accent);
+    color: var(--color-text-white);
+  }
+</style>

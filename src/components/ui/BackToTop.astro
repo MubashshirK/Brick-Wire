@@ -1,0 +1,45 @@
+<button class="back-to-top" id="back-to-top" aria-label="Back to top">
+  <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
+    <path d="M1 7L7 1L13 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span>Back to top</span>
+</button>
+
+<script>
+  const btn = document.getElementById('back-to-top');
+  if (btn) {
+    window.addEventListener('scroll', () => {
+      btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+    });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
+
+<style>
+  .back-to-top {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    width: 100%;
+    background: var(--color-bg-light);
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .back-to-top svg {
+    color: var(--color-accent);
+  }
+  @media (min-width: 62em) {
+    .back-to-top {
+      display: none !important;
+    }
+  }
+</style>

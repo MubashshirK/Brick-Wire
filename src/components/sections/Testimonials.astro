@@ -1,0 +1,276 @@
+---
+import { TESTIMONIALS } from "../../lib/constants";
+---
+
+<section class="testimonials-section section-padding">
+  <div class="container">
+    <div class="testimonials-layout">
+      <div class="testimonials-header">
+        <h2 class="testimonials-title">
+          Everything you need to <em>know to start your day</em>
+        </h2>
+        <p class="testimonials-desc">
+          The news is important, but if you're a busy real estate professional
+          like most, you don't have time to skim through dozens of dry (and
+          ad-filled) media outlets.
+        </p>
+      </div>
+      <div class="testimonials-right">
+        <div class="testimonials-top-bar">
+          <span class="testimonials-label">WHAT READERS ARE SAYING:</span>
+          <div class="testimonials-nav">
+            <button
+              class="testimonials-arrow"
+              id="testimonials-prev"
+              aria-label="Previous"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg
+              >
+            </button>
+            <button
+              class="testimonials-arrow"
+              id="testimonials-next"
+              aria-label="Next"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg
+              >
+            </button>
+          </div>
+        </div>
+        <div class="testimonials-carousel" id="testimonials-carousel">
+          <div class="testimonials-carousel-track">
+            {
+              [...TESTIMONIALS, ...TESTIMONIALS].map((t) => (
+                <div class="testimonial-card">
+                  <p class="testimonial-text">&ldquo;{t.text}&rdquo;</p>
+                  <div class="testimonial-author">
+                    <strong class="testimonial-name">{t.name}</strong>
+                    <span class="testimonial-title">{t.title}</span>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const carousel = document.getElementById("testimonials-carousel");
+    const prevBtn = document.getElementById("testimonials-prev");
+    const nextBtn = document.getElementById("testimonials-next");
+    const track = carousel?.querySelector(".testimonials-carousel-track") as HTMLElement;
+    if (!carousel || !prevBtn || !nextBtn || !track) return;
+
+    const CARD_GAP = 16;
+    const cards = track.querySelectorAll(".testimonial-card");
+    const TOTAL_CARDS = cards.length;
+    const HALF = TOTAL_CARDS / 2;
+    const CARD_WIDTH = (cards[0] as HTMLElement)?.offsetWidth || 360;
+    const STEP = CARD_WIDTH + CARD_GAP;
+
+    let currentIndex = 0;
+    let isPaused = false;
+    let autoTimeout: ReturnType<typeof setTimeout>;
+
+    function getTransform(idx: number) {
+      return -idx * STEP;
+    }
+
+    function updateTrack(idx: number, transition: string) {
+      track.style.transition = transition;
+      track.style.transform = `translateX(${getTransform(idx)}px)`;
+    }
+
+    function jumpTo(idx: number) {
+      idx = ((idx % HALF) + HALF) % HALF;
+      currentIndex = idx;
+      track.style.transition = "none";
+      track.style.transform = `translateX(${getTransform(idx)}px)`;
+    }
+
+    function scheduleNext() {
+      autoTimeout = setTimeout(() => {
+        if (!isPaused) {
+          const target = currentIndex + 1;
+          currentIndex = target >= HALF ? target - HALF : target;
+          updateTrack(currentIndex, "transform 0.5s ease");
+        }
+        scheduleNext();
+      }, 4000);
+    }
+
+    function scrollBy(dir: 1 | -1, duration = 400) {
+      const target = currentIndex + dir;
+      const nextIndex = target >= HALF ? target - HALF : target < 0 ? target + HALF : target;
+      currentIndex = nextIndex;
+      updateTrack(currentIndex, `transform ${duration}ms ease`);
+    }
+
+    prevBtn.addEventListener("click", () => scrollBy(-1));
+    nextBtn.addEventListener("click", () => scrollBy(1));
+    carousel.addEventListener("mouseenter", () => { isPaused = true; });
+    carousel.addEventListener("mouseleave", () => { isPaused = false; });
+
+    scheduleNext();
+  })();
+</script>
+
+<style>
+  .testimonials-section {
+    background: var(--color-bg-dark);
+    overflow: hidden;
+  }
+
+  .testimonials-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .testimonials-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+
+  .testimonials-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--color-text-white);
+    margin: 0;
+  }
+
+  .testimonials-title em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .testimonials-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .testimonials-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .testimonials-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .testimonials-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+  }
+
+  .testimonials-nav {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .testimonials-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    padding: 0;
+  }
+
+  .testimonials-arrow:hover {
+    opacity: 0.7;
+  }
+
+  .testimonials-carousel {
+    overflow: hidden;
+    padding-bottom: 0.5rem;
+  }
+
+  .testimonials-carousel-track {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .testimonial-card {
+    background: var(--color-bg-dark-2);
+    padding: 1.75rem;
+    border-radius: 0.75rem;
+    min-width: 320px;
+    max-width: 380px;
+    width: 360px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 62em) {
+    .testimonial-card {
+      min-width: 340px;
+    }
+  }
+
+  .testimonial-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .testimonial-name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-text-white);
+  }
+
+  .testimonial-title {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+</style>

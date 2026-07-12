@@ -1,0 +1,22 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+export async function getStaticPaths() {
+  return ['national', 'texas', 'california', 'new-york', 'florida'].map(market => ({
+    params: { market },
+  }));
+}
+const { market } = Astro.params;
+const marketName = market ? market.charAt(0).toUpperCase() + market.slice(1).replace('-', ' ') : '';
+---
+
+<PageLayout title={`${marketName} Market Briefs`}>
+  <section class="section-padding">
+    <div class="container">
+      <h1 style="font-size: var(--fs-heading-1); margin-bottom: 2rem;">{marketName} Market Briefs</h1>
+      <p style="color: var(--color-text-muted); margin-bottom: 2rem;">The latest real estate news and trends from the {marketName} market.</p>
+      <div class="briefs-list">
+        <!-- Briefs filtered by market would render here -->
+      </div>
+    </div>
+  </section>
+</PageLayout>

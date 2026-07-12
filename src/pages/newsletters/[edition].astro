@@ -1,0 +1,20 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import NewsletterCard from '../../components/cards/NewsletterCard.astro';
+export async function getStaticPaths() {
+  return ['national', 'texas', 'new-york'].map(edition => ({ params: { edition } }));
+}
+const { edition } = Astro.params;
+const editionName = edition ? edition.charAt(0).toUpperCase() + edition.slice(1).replace('-', ' ') : '';
+---
+
+<PageLayout title={`${editionName} Newsletter`}>
+  <section class="section-padding">
+    <div class="container">
+      <h1 style="font-size: var(--fs-heading-1); margin-bottom: 2rem;">{editionName} Newsletter</h1>
+      <div class="newsletter-list">
+        <!-- Issues for this edition would render here -->
+      </div>
+    </div>
+  </section>
+</PageLayout>

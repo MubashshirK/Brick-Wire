@@ -1,0 +1,652 @@
+---
+const emails = [
+  {
+    title:
+      "Construction Costs Climb as Labor Shortages and Trade Policy Tighten the Market",
+    excerpt:
+      "JLL says rising labor shortages, tariffs and data center demand are pushing construction costs higher, making early procurement more critical than ever.",
+    category: "RISING STAR",
+    image: "https://picsum.photos/seed/construction-costs/400/267",
+  },
+  {
+    title: "NYC Office-to-Apartment Conversion Halted After Structural Scare",
+    excerpt:
+      "Buckled columns forced evacuations at MetroLoft's 1,600-unit apartment conversion in Midtown Manhattan.",
+    category: "THE TAKEAWAY",
+    image: "https://picsum.photos/seed/nyc-conversion/400/267",
+  },
+  {
+    title: "Why Rate Cuts May Not Be the CRE Catalyst Investors Expect",
+    excerpt:
+      "New research is challenging one of CRE's biggest assumptions: that lower interest rates automatically lead to stronger returns.",
+    category: "THE TAKEAWAY",
+    image: "https://picsum.photos/seed/rate-cuts/400/267",
+  },
+  {
+    title:
+      "Texas Multifamily's New Reality: Growth Meets Affordability Pressure",
+    excerpt:
+      "A more disciplined investment environment is emerging as Texas markets shift from rapid expansion toward sustainable growth.",
+    category: "THE TAKEAWAY",
+    image: "https://picsum.photos/seed/texas-multifamily/400/267",
+  },
+];
+---
+
+<div class="inbox-mockup">
+  <div class="inbox-mockup__inner">
+    <!-- Email Inbox Panel -->
+    <div class="inbox-panel">
+      <div class="inbox-panel__tabs">
+        <span class="inbox-tab inbox-tab--active">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><rect x="2" y="4" width="20" height="16" rx="2"></rect><path
+              d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg
+          >
+          Inbox
+        </span>
+      </div>
+      <div class="inbox-panel__list">
+        {
+          emails.map((email, i) => (
+            <>
+              <div
+                class={`inbox-row js-inbox-row ${i === 0 ? "is-active" : ""}`}
+                data-index={i}
+              >
+                <span class="inbox-row__check" />
+                <svg
+                  class="inbox-row__star"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 14 14"
+                  fill={i % 2 === 0 ? "#bdb4ea" : "none"}
+                  stroke="#bdb4ea"
+                  stroke-width="1"
+                >
+                  <path d="M7 0l1.96 4.46 4.79.56-3.5 3.39.87 4.99L7 10.5l-4.12 2.9.87-4.99-3.5-3.39 4.79-.56L7 0z" />
+                </svg>
+                <span class="inbox-row__title">{email.title}</span>
+              </div>
+              <div class="inbox-row" data-index={i}>
+                <span class="inbox-row__check" />
+                <svg
+                  class="inbox-row__star"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  stroke="#d0d0d0"
+                  stroke-width="1"
+                >
+                  <path d="M7 0l1.96 4.46 4.79.56-3.5 3.39.87 4.99L7 10.5l-4.12 2.9.87-4.99-3.5-3.39 4.79-.56L7 0z" />
+                </svg>
+                <span class="inbox-row__skeleton" />
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Phone Mockup -->
+    <div class="phone-mockup">
+      <div class="phone-frame">
+        <div class="phone-btn-side phone-btn-left">
+          <div class="phone-btn phone-btn-silent"></div>
+          <div class="phone-btn phone-btn-vol-up"></div>
+          <div class="phone-btn phone-btn-vol-down"></div>
+        </div>
+        <div class="phone-btn-side phone-btn-right">
+          <div class="phone-btn phone-btn-power"></div>
+        </div>
+        <div class="phone-dynamic-island"></div>
+        <div class="phone-screen">
+          <!-- iOS Status Bar -->
+          <div class="phone-status">
+            <span class="phone-time">7:00 AM</span>
+            <div class="phone-status-icons">
+              <svg width="12" height="8" viewBox="0 0 15 10" fill="currentColor"
+                ><path
+                  d="M7.5 2.5C5.4 2.5 3.5 3.3 2.1 4.7L0 2.6C2 0.6 4.6-0.5 7.5-0.5S13 0.6 15 2.6L12.9 4.7C11.5 3.3 9.6 2.5 7.5 2.5Z"
+                  opacity="0.3"></path><path
+                  d="M7.5 5.5C6.1 5.5 4.8 6 3.9 6.9L7.5 10.5L11.1 6.9C10.2 6 8.9 5.5 7.5 5.5Z"
+                ></path></svg
+              >
+              <svg width="12" height="8" viewBox="0 0 16 10" fill="currentColor"
+                ><rect x="0" y="5" width="3" height="5" rx="0.5"></rect><rect
+                  x="4.5"
+                  y="3"
+                  width="3"
+                  height="7"
+                  rx="0.5"></rect><rect
+                  x="9"
+                  y="1"
+                  width="3"
+                  height="9"
+                  rx="0.5"></rect><rect
+                  x="13.5"
+                  y="0"
+                  width="2.5"
+                  height="10"
+                  rx="0.5"
+                  opacity="0.3"></rect></svg
+              >
+              <svg width="18" height="9" viewBox="0 0 25 12" fill="none"
+                ><rect
+                  x="0.5"
+                  y="0.5"
+                  width="21"
+                  height="11"
+                  rx="3.5"
+                  stroke="currentColor"
+                  stroke-opacity="0.35"></rect><rect
+                  x="2"
+                  y="2"
+                  width="16"
+                  height="8"
+                  rx="2"
+                  fill="currentColor"></rect><path
+                  d="M23 4.5V8.5C23.8 8.2 24.5 7.2 24.5 6.5C24.5 5.8 23.8 4.8 23 4.5Z"
+                  fill="currentColor"
+                  opacity="0.4"></path></svg
+              >
+            </div>
+          </div>
+          <!-- Phone Header -->
+          <div class="phone-header">
+            <span class="phone-brand">
+              <img
+                src="/images/brick-wire-logo.png"
+                alt="Brick Wire"
+                class="phone-logo-img"
+              />
+              Brick Wire
+            </span>
+            <span class="phone-meta">The Newsletter<br />06 Jul</span>
+          </div>
+          <!-- Phone Content -->
+          <div class="phone-content">
+            <p class="phone-greeting">
+              Good morning. Welcome back to Brick Wire!
+            </p>
+            <div class="phone-skeleton-bar phone-skeleton-bar--short"></div>
+            {
+              emails.map((email, i) => (
+                <div
+                  class={`phone-article js-phone-article ${i === 0 ? "is-active" : ""}`}
+                  data-index={i}
+                >
+                  <span class="phone-article__label">{email.category}</span>
+                  <h4 class="phone-article__title">{email.title}</h4>
+                  <div class="phone-article__img">
+                    <img src={email.image} alt="" loading="lazy" />
+                  </div>
+                  <p class="phone-article__excerpt">{email.excerpt}</p>
+                  <span class="phone-article__takeaway">THE TAKEAWAY</span>
+                  <div class="phone-skeleton-group">
+                    <div class="phone-skeleton-bar" />
+                    <div class="phone-skeleton-bar phone-skeleton-bar--medium" />
+                    <div class="phone-skeleton-bar phone-skeleton-bar--short" />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const rows = document.querySelectorAll(".js-inbox-row");
+    const articles = document.querySelectorAll(".js-phone-article");
+    let currentIndex = 0;
+    let isHovered = false;
+
+    function setActive(index: number) {
+      rows.forEach((r) => r.classList.remove("is-active"));
+      articles.forEach((a) => a.classList.remove("is-active"));
+      const activeRow = document.querySelector(
+        `.js-inbox-row[data-index="${index}"]`,
+      );
+      const activeArticle = document.querySelector(
+        `.js-phone-article[data-index="${index}"]`,
+      );
+      activeRow?.classList.add("is-active");
+      activeArticle?.classList.add("is-active");
+    }
+
+    setInterval(() => {
+      if (isHovered) return;
+      currentIndex = (currentIndex + 1) % 4;
+      setActive(currentIndex);
+    }, 4000);
+
+    rows.forEach((row) => {
+      row.addEventListener("mouseenter", () => {
+        isHovered = true;
+        const idx = parseInt(row.getAttribute("data-index") || "0");
+        currentIndex = idx;
+        setActive(idx);
+      });
+      row.addEventListener("mouseleave", () => {
+        setTimeout(() => {
+          isHovered = false;
+        }, 1000);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .inbox-mockup {
+    width: 98%;
+  }
+
+  .inbox-mockup__inner {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1.25rem;
+    width: 100%;
+    align-items: flex-end;
+  }
+
+  @media (min-width: 62em) {
+    .inbox-mockup__inner {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0;
+    }
+  }
+
+  /* ── Inbox Panel ── */
+  .inbox-panel {
+    flex: 1;
+    border: 3px solid #e5e7eb;
+    background: #fff;
+    border-radius: 24px 0 0 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    min-height: 240px;
+    margin-left: 80px;
+  }
+
+  @media (max-width: 61.99em) {
+    .inbox-panel {
+      border-radius: 12px;
+      max-width: 100%;
+    }
+  }
+
+  .inbox-panel__tabs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .inbox-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #9ca3af;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid transparent;
+  }
+
+  .inbox-tab--active {
+    color: #9ca3af;
+    border-bottom-color: #9ca3af;
+  }
+
+  .inbox-tab svg {
+    opacity: 1;
+    width: 18px;
+    height: 18px;
+    color: #9ca3af;
+  }
+
+  .inbox-tab--active svg {
+    color: #9ca3af;
+  }
+
+  .inbox-panel__list {
+    padding: 0.125rem 0;
+  }
+
+  .inbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+  }
+
+  .inbox-row:has(.inbox-row__skeleton) {
+    background: #f3f4f6;
+  }
+
+  .inbox-row:last-child {
+    border-bottom: none;
+  }
+
+  .inbox-row__check {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1.5px solid #d1d5db;
+    flex-shrink: 0;
+  }
+
+  .inbox-row__star {
+    flex-shrink: 0;
+  }
+
+  .inbox-row__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #374151;
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+
+  .inbox-row.is-active .inbox-row__title {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .inbox-row__skeleton {
+    height: 10px;
+    width: 120px;
+    background: linear-gradient(90deg, #c0c0c0 25%, #d4d4d4 50%, #c0c0c0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes skeleton-pulse {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* ── Phone Mockup ── */
+  .phone-mockup {
+    width: 280px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    margin-left: -270px;
+    margin-top: -60px;
+  }
+
+  @media (max-width: 61.99em) {
+    .phone-mockup {
+      width: 200px;
+      margin: 0 auto;
+    }
+  }
+
+  .phone-frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 180%;
+    background: #000;
+    border-radius: 2.25rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    overflow: visible;
+  }
+
+  .phone-btn-side {
+    position: absolute;
+    top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    z-index: 10;
+  }
+
+  .phone-btn-left {
+    left: -0.2rem;
+  }
+
+  .phone-btn-right {
+    right: -0.2rem;
+  }
+
+  .phone-btn {
+    background: #1a1a1a;
+    border-radius: 0.05rem;
+  }
+
+  .phone-btn-silent {
+    width: 0.2rem;
+    height: 1rem;
+  }
+
+  .phone-btn-vol-up {
+    width: 0.2rem;
+    height: 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .phone-btn-vol-down {
+    width: 0.2rem;
+    height: 2.5rem;
+  }
+
+  .phone-btn-power {
+    width: 0.2rem;
+    height: 2.5rem;
+  }
+
+  .phone-dynamic-island {
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 1.2rem;
+    background: #000;
+    border-radius: 0.8rem;
+    z-index: 30;
+  }
+
+  .phone-screen {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    right: 0.4rem;
+    bottom: 0.4rem;
+    background: #fff;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* iOS Status Bar */
+  .phone-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem 0.2rem;
+    background: #f5f5f5;
+    position: relative;
+    z-index: 15;
+  }
+
+  .phone-time {
+    font-weight: 700;
+    font-size: 0.55rem;
+    color: #000;
+  }
+
+  .phone-status-icons {
+    display: flex;
+    gap: 0.15rem;
+    align-items: center;
+  }
+
+  .phone-status-icons svg {
+    color: #000;
+  }
+
+  /* Phone Header */
+  .phone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: #f5f5f5;
+    color: #111;
+  }
+
+  .phone-brand {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .phone-logo-img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    border-radius: 0.15rem;
+  }
+
+  .phone-meta {
+    font-size: 0.5rem;
+    opacity: 0.6;
+    text-align: right;
+    line-height: 1.3;
+  }
+
+  /* Phone Content */
+  .phone-content {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    overflow-y: auto;
+    background: #fff;
+  }
+
+  .phone-greeting {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+  }
+
+  .phone-skeleton-bar {
+    height: 0.4rem;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    border-radius: 0.1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .phone-skeleton-bar--short {
+    width: 60%;
+  }
+
+  .phone-skeleton-bar--medium {
+    width: 80%;
+  }
+
+  .phone-skeleton-group {
+    margin-top: 0.4rem;
+  }
+
+  @keyframes skeleton-pulse {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .phone-article {
+    display: none;
+  }
+
+  .phone-article.is-active {
+    display: block;
+  }
+
+  .phone-article__label {
+    display: block;
+    font-size: 0.45rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .phone-article__title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.3;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .phone-article__img {
+    width: 100%;
+    padding-bottom: 55%;
+    position: relative;
+    background: #f3f4f6;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .phone-article__img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .phone-article__excerpt {
+    font-size: 0.55rem;
+    line-height: 1.4;
+    color: #4b5563;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .phone-article__takeaway {
+    display: block;
+    font-size: 0.4rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+</style>

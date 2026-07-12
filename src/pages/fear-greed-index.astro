@@ -1,0 +1,106 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+
+const indicators = [
+  { name: 'REIT Performance', value: 42, label: 'Bearish' },
+  { name: 'Transaction Volume', value: 45, label: 'Bearish' },
+  { name: 'Cap Rate Spread', value: 38, label: 'Fear' },
+  { name: 'Debt Availability', value: 55, label: 'Neutral' },
+  { name: 'Construction Starts', value: 48, label: 'Bearish' },
+  { name: 'Occupancy Rates', value: 62, label: 'Greed' },
+  { name: 'Investor Sentiment', value: 35, label: 'Fear' },
+  { name: 'GDP Growth Correlation', value: 50, label: 'Neutral' },
+];
+
+function getColor(val: number): string {
+  if (val <= 25) return '#e74c3c';
+  if (val <= 45) return '#e67e22';
+  if (val <= 55) return '#f1c40f';
+  if (val <= 75) return '#2ecc71';
+  return '#27ae60';
+}
+---
+
+<PageLayout title="Fear & Greed Index" description="Measure market sentiment across commercial real estate sectors.">
+  <section class="section-padding">
+    <div class="container" style="max-width: var(--container-narrow);">
+      <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Fear & Greed Index</h1>
+      <p style="color: var(--color-text-muted); margin-bottom: 2rem;">A composite measure of commercial real estate market sentiment. 0 = Extreme Fear, 100 = Extreme Greed.</p>
+
+      <div class="composite-gauge">
+        <div class="gauge-value" style="color: #e67e22;">46</div>
+        <div class="gauge-label">Fear</div>
+        <div class="gauge-bar">
+          <div class="gauge-fill" style="width: 46%; background: #e67e22;"></div>
+        </div>
+        <div class="gauge-scale">
+          <span style="color: #e74c3c;">0 Fear</span>
+          <span style="color: #27ae60;">100 Greed</span>
+        </div>
+      </div>
+
+      <div class="indicators-grid">
+        {indicators.map(ind => (
+          <div class="indicator-card">
+            <div class="indicator-header">
+              <span class="indicator-name">{ind.name}</span>
+              <span class="indicator-value" style="color: {getColor(ind.value)};">{ind.value}</span>
+            </div>
+            <div class="indicator-bar">
+              <div class="indicator-fill" style="width: {ind.value}%; background: {getColor(ind.value)};"></div>
+            </div>
+            <div class="indicator-label">{ind.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .composite-gauge {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .gauge-value {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .gauge-label {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .gauge-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--color-bg-subtle);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+  .gauge-fill { height: 100%; border-radius: 999px; transition: width 0.5s ease; }
+  .gauge-scale { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-text-muted); }
+  .indicators-grid { display: grid; gap: 1rem; }
+  .indicator-card {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+  }
+  .indicator-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .indicator-name { font-size: 0.9375rem; font-weight: 600; }
+  .indicator-value { font-size: 1.25rem; font-weight: 700; font-family: var(--font-heading); }
+  .indicator-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--color-bg-subtle);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+  }
+  .indicator-fill { height: 100%; border-radius: 999px; }
+  .indicator-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+</style>

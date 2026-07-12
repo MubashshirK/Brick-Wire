@@ -1,0 +1,82 @@
+---
+import { LOGOS } from '../../lib/constants';
+
+interface Props {
+  title?: string;
+}
+const { title } = Astro.props;
+---
+
+<div class="c-logo-slider">
+  {title && <p class="logo-slider-title">{title}</p>}
+  <div class="c-logo-slider__wrapper">
+    <div class="c-logo-slider__track">
+      {[...LOGOS, ...LOGOS].map(logo => (
+        <div class="c-logo-slider__cell">
+          <div class="c-logo-slider__logo">
+            <span>{logo.name}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple CSS animation handles the auto-scroll
+</script>
+
+<style>
+  .c-logo-slider {
+    width: 100%;
+    overflow: hidden;
+  }
+  .logo-slider-title {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .c-logo-slider__wrapper {
+    height: 2.5rem;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .c-logo-slider__track {
+    display: flex;
+    animation: scroll-logos 20s linear infinite;
+    gap: 3rem;
+    padding: 0 1.5rem;
+  }
+  .c-logo-slider__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 2.5rem;
+  }
+  .c-logo-slider__logo {
+    opacity: 0.5;
+    transition: opacity var(--transition-fast);
+    white-space: nowrap;
+  }
+  .c-logo-slider__logo span {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+  .c-logo-slider__cell:hover .c-logo-slider__logo {
+    opacity: 1;
+  }
+  @keyframes scroll-logos {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>

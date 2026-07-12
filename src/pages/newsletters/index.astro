@@ -1,0 +1,56 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import NewsletterCard from '../../components/cards/NewsletterCard.astro';
+
+const editions = [
+  { title: 'Construction Costs Climb as Labor Shortages and Trade Policy Tighten the Market', slug: 'construction-costs-climb', edition: 'national', date: 'July 10, 2026', excerpt: 'JLL says rising labor shortages, tariffs and data center demand are pushing construction costs higher.' },
+  { title: 'NYC Office-to-Apartment Conversion Halted After Structural Scare', slug: 'nyc-conversion-halted', edition: 'new-york', date: 'July 9, 2026' },
+  { title: 'Why Rate Cuts May Not Be the CRE Catalyst Investors Expect', slug: 'rate-cuts-cre-catalyst', edition: 'national', date: 'July 9, 2026' },
+  { title: 'Texas Multifamily Growth Meets Affordability Pressure', slug: 'texas-multifamily-growth', edition: 'texas', date: 'July 8, 2026' },
+  { title: 'Industrial Leasing Surges as Occupiers Lock In Long-Term Deals', slug: 'industrial-leasing-surges', edition: 'national', date: 'July 8, 2026' },
+  { title: 'NYC Apartment Market Defies Headwinds', slug: 'nyc-apartment-defies', edition: 'new-york', date: 'July 7, 2026' },
+];
+---
+
+<PageLayout title="Newsletters" description="Browse all Brick Wire newsletter editions by market.">
+  <section class="newsletters-page section-padding">
+    <div class="container">
+      <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Newsletters</h1>
+      <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Browse editions from National, Texas, and New York.</p>
+
+      <div class="edition-tabs">
+        <a href="/newsletters/national/" class="edition-tab">National</a>
+        <a href="/newsletters/texas/" class="edition-tab">Texas</a>
+        <a href="/newsletters/new-york/" class="edition-tab">New York</a>
+      </div>
+
+      <div class="newsletter-list">
+        {editions.map(n => <NewsletterCard {...n} />)}
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .edition-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0;
+  }
+  .edition-tab {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition-fast);
+  }
+  .edition-tab:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>

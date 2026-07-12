@@ -1,0 +1,44 @@
+---
+import { SOCIAL } from '../../lib/constants';
+---
+
+<div class="social-links">
+  <span class="social-links-title">{Astro.props.title || 'Follow us'}</span>
+  <div class="social-links-row">
+    {SOCIAL.map(s => (
+      <a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .social-links-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+  .social-links-row {
+    display: flex;
+    gap: 12px;
+  }
+  .social-links-row a {
+    color: var(--color-text-muted);
+    transition: color var(--transition-fast);
+    display: flex;
+  }
+  .social-links-row a:hover {
+    color: var(--color-accent);
+  }
+</style>

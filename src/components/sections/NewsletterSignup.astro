@@ -1,0 +1,214 @@
+---
+import TextSlider from '../blocks/TextSlider.astro';
+import { NEWSLETTER_WORDS, SITE } from '../../lib/constants';
+
+const issues = [
+  { title: 'Construction Costs Climb as Labor Shortages and Trade Policy Tighten the Market', edition: 'National', date: 'July 10, 2026' },
+  { title: 'NYC Office-to-Apartment Conversion Halted After Structural Scare', edition: 'New York', date: 'July 9, 2026' },
+  { title: 'Why Rate Cuts May Not Be the CRE Catalyst Investors Expect', edition: 'National', date: 'July 9, 2026' },
+  { title: 'Texas Multifamily Growth Meets Affordability Pressure', edition: 'Texas', date: 'July 8, 2026' },
+  { title: 'Industrial Leasing Surges as Occupiers Lock In Long-Term Deals', edition: 'National', date: 'July 8, 2026' },
+  { title: 'NYC Apartment Market Defies Headwinds', edition: 'New York', date: 'July 7, 2026' },
+];
+---
+
+<section class="newsletter-signup-section section-dark section-padding">
+  <div class="container">
+    <div class="newsletter-signup-grid">
+      <div class="newsletter-signup-content">
+        <h2 class="newsletter-signup-title">
+          Join <strong>{SITE.subscriberCount}</strong> <TextSlider words={NEWSLETTER_WORDS} /> who start their day with Brick Wire.
+        </h2>
+        <p class="newsletter-signup-desc">
+          The latest news and trends in real estate delivered to your inbox. Get smarter about what matters in just 5 minutes or less.
+        </p>
+        <form class="hero-form" action="/api/subscribe" method="POST">
+          <input type="hidden" name="form_location" value="footer" />
+          <input type="hidden" name="publication" value="Brick Wire" />
+          <label for="footer-email" class="sr-only">Email address</label>
+          <div class="hero-form-input-wrap">
+            <svg class="hero-form-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            <input id="footer-email" name="email" type="email" placeholder="Enter your email" required />
+          </div>
+          <button type="submit" class="btn btn-primary hero-form-submit">SUBSCRIBE</button>
+        </form>
+        <p class="hero-privacy">Your privacy is our priority. Unsubscribe anytime.</p>
+      </div>
+      <div class="newsletter-signup-issues">
+        <div class="issues-slider">
+          {issues.map(issue => (
+            <a href="#" class="issue-card">
+              <div class="issue-card__image"></div>
+              <div class="issue-card__content">
+                <span class="issue-edition">{issue.edition}</span>
+                <h3 class="issue-title">{issue.title}</h3>
+                <span class="issue-date">{issue.date}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter-signup-section {
+    background: var(--color-bg-dark);
+  }
+  .newsletter-signup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .newsletter-signup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .newsletter-signup-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-heading-2);
+    line-height: 1.2;
+    margin: 0;
+  }
+  .newsletter-signup-title strong {
+    color: var(--color-accent);
+    font-family: var(--font-heading);
+  }
+  .newsletter-signup-title :global(.text-slider) {
+    font-family: var(--font-heading);
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .newsletter-signup-title :global(.text-slider li) {
+    font-family: var(--font-heading);
+    font-size: inherit;
+  }
+  .newsletter-signup-desc {
+    color: var(--color-accent-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .hero-form {
+    display: flex;
+    gap: 0;
+    max-width: 500px;
+  }
+  .hero-form-input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-right: none;
+    background: rgba(255,255,255,0.05);
+    transition: border-color var(--transition-fast);
+  }
+  .hero-form-input-wrap:focus-within {
+    border-color: var(--color-accent);
+  }
+  .hero-form-icon {
+    flex-shrink: 0;
+    margin-left: 1rem;
+    color: var(--color-text-muted);
+  }
+  .hero-form input {
+    flex: 1;
+    padding: 0.9375rem 1rem;
+    border: none;
+    font-size: 1rem;
+    background: transparent;
+    color: var(--color-text-white);
+    outline: none;
+  }
+  .hero-form input::placeholder {
+    color: var(--color-text-muted);
+  }
+  .hero-form-submit {
+    border-radius: 0;
+  }
+  .hero-privacy {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .newsletter-signup-issues {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+  }
+  .issues-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: slide-issues 12s ease-in-out infinite;
+  }
+  .issue-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--color-bg-dark-2);
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--transition-fast);
+  }
+  .issue-card:hover {
+    background: rgba(255,255,255,0.08);
+  }
+  .issue-card__image {
+    width: 80px;
+    height: 60px;
+    border-radius: 0.5rem;
+    background: rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+  .issue-edition {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+  }
+  .issue-title {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-white);
+    margin: 0.25rem 0;
+    line-height: 1.3;
+  }
+  .issue-date {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  @keyframes slide-issues {
+    0%, 15% { transform: translateY(0); }
+    20%, 35% { transform: translateY(-5.5rem); }
+    40%, 55% { transform: translateY(-11rem); }
+    60%, 75% { transform: translateY(-16.5rem); }
+    80%, 95% { transform: translateY(-22rem); }
+    100% { transform: translateY(-27.5rem); }
+  }
+  @media (max-width: 62em) {
+    .newsletter-signup-grid {
+      grid-template-columns: 1fr;
+    }
+    .newsletter-signup-issues {
+      display: none;
+    }
+  }
+  @media (max-width: 48em) {
+    .hero-form {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .hero-form-input-wrap {
+      border-right: 2px solid rgba(255,255,255,0.2);
+    }
+  }
+</style>

@@ -1,0 +1,151 @@
+---
+---
+
+<div id="searchOverlay" class="search-overlay" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-backdrop"></div>
+  <div class="search-panel">
+    <div class="search-header">
+      <form class="search-form" action="/search/" method="GET" role="search">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="9" r="7"/>
+          <path d="M14 14l4 4"/>
+        </svg>
+        <input type="search" name="q" class="search-input" placeholder="Search briefs, newsletters, reviews..." autocomplete="off" />
+      </form>
+      <button class="search-close" id="searchClose" aria-label="Close search">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 6l12 12M18 6l-12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="search-suggestions">
+      <p class="search-suggestions-label">Popular searches:</p>
+      <div class="search-tags">
+        <a href="/market/national/" class="search-tag">National</a>
+        <a href="/sectors/multifamily/" class="search-tag">Multifamily</a>
+        <a href="/sectors/industrial/" class="search-tag">Industrial</a>
+        <a href="/newsletters/national/" class="search-tag">Newsletter</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const searchToggle = document.getElementById('searchToggle');
+  const searchOverlay = document.getElementById('searchOverlay');
+  const searchClose = document.getElementById('searchClose');
+  const searchInput = document.querySelector('.search-input');
+
+  function openSearch() {
+    searchOverlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => searchInput?.focus(), 100);
+  }
+
+  function closeSearch() {
+    searchOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
+    searchInput?.blur();
+  }
+
+  searchToggle?.addEventListener('click', openSearch);
+  searchClose?.addEventListener('click', closeSearch);
+  searchOverlay?.addEventListener('click', (e) => {
+    if (e.target === searchOverlay || e.target.classList.contains('search-backdrop')) {
+      closeSearch();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch();
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchOverlay?.classList.contains('active') ? closeSearch() : openSearch();
+    }
+  });
+</script>
+
+<style>
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    padding-top: 8rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+  .search-overlay.active {
+    pointer-events: all;
+    opacity: 1;
+  }
+  .search-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+  }
+  .search-panel {
+    position: relative;
+    width: min(640px, 90vw);
+    background: var(--color-bg-primary);
+    border-radius: 1rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 1.5rem;
+    height: fit-content;
+  }
+  .search-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .search-form {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    transition: border-color var(--transition-fast);
+  }
+  .search-form:focus-within {
+    border-color: var(--color-accent);
+  }
+  .search-icon { color: var(--color-text-muted); flex-shrink: 0; }
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: transparent;
+    color: var(--color-text-primary);
+  }
+  .search-input::placeholder { color: var(--color-text-muted); }
+  .search-close {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all var(--transition-fast);
+  }
+  .search-close:hover { background: var(--color-bg-subtle); color: var(--color-text-primary); }
+  .search-suggestions { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+  .search-suggestions-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 0.75rem; }
+  .search-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .search-tag {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background: var(--color-bg-subtle);
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--color-text-body);
+    transition: all var(--transition-fast);
+  }
+  .search-tag:hover { background: var(--color-accent); color: var(--color-text-white); }
+</style>

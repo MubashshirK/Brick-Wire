@@ -1,0 +1,41 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+export async function getStaticPaths() {
+  const pages = ['about-us', 'advertise', 'careers', 'contact-us', 'events', 'terms', 'search-partners', 'privacy-policy', 'terms-of-use', 'editorial-guidelines', 'advertiser-disclosure'];
+  return pages.map(slug => ({ params: { slug } }));
+}
+const { slug } = Astro.params;
+const pageMeta: Record<string, { title: string; description: string }> = {
+  'about-us': { title: 'About Us', description: 'Learn about Brick Wire and our mission to provide your daily edge in commercial real estate.' },
+  'advertise': { title: 'Advertise', description: 'Reach thousands of CRE professionals with Brick Wire advertising.' },
+  'careers': { title: 'Careers', description: 'Join the Brick Wire team and help shape the future of real estate media.' },
+  'contact-us': { title: 'Contact Us', description: 'Get in touch with the Brick Wire team.' },
+  'events': { title: 'Events', description: 'Upcoming Brick Wire events and appearances.' },
+  'terms': { title: 'Terms of Service', description: 'Terms and conditions for using Brick Wire.' },
+  'search-partners': { title: 'Search Partners', description: 'Our trusted search and data partners.' },
+  'privacy-policy': { title: 'Privacy Policy', description: 'How Brick Wire collects and uses your data.' },
+  'terms-of-use': { title: 'Terms of Use', description: 'Terms governing the use of Brick Wire.' },
+  'editorial-guidelines': { title: 'Editorial Guidelines', description: 'Our editorial standards and practices.' },
+  'advertiser-disclosure': { title: 'Advertiser Disclosure', description: 'Transparency about our advertising relationships.' },
+};
+const meta = pageMeta[slug ?? ''] ?? { title: 'Page', description: '' };
+---
+
+<PageLayout title={meta.title} description={meta.description}>
+  <section class="static-page section-padding">
+    <div class="container" style="max-width: var(--container-narrow);">
+      <h1 class="static-title">{meta.title}</h1>
+      <div class="static-body">
+        <p>This page is coming soon. Content will be managed through the Brick Wire CMS.</p>
+        <p>In the meantime, feel free to <a href="/contact-us/">contact us</a> with any questions.</p>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .static-page { padding-top: calc(var(--header-height) + 2rem); }
+  .static-title { font-size: var(--fs-heading-1); margin-bottom: 1.5rem; }
+  .static-body p { font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; color: var(--color-text-body); }
+  .static-body a { color: var(--color-accent); }
+</style>

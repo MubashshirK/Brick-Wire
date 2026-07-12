@@ -1,0 +1,101 @@
+<section class="about-section section-padding">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-content">
+        <span class="about-label">ABOUT US</span>
+        <h2 class="about-title">
+          Our mission is to empower professionals with the knowledge they need
+          to make smarter decisions and do more business.
+        </h2>
+        <p class="about-desc">
+          Brick Wire is a digital media company covering the business of real
+          estate. We deliver a well-rounded daily email you can trust, in a
+          format that is digestible, independent, and actionable, to get you up
+          to speed every morning with the information you need to start your
+          day.
+        </p>
+        <a href="/about-us/" class="btn btn-primary about-cta">OUR STORY</a>
+      </div>
+      <div class="about-visual">
+        <div class="about-video-placeholder">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+            <circle
+              cx="30"
+              cy="30"
+              r="28"
+              fill="none"
+              stroke="var(--color-accent)"
+              stroke-width="2"
+              opacity="0.5"></circle>
+            <path d="M24 20l16 10l-16 10z" fill="var(--color-accent)"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .about-content {
+    order: 1;
+  }
+  .about-visual {
+    order: 2;
+    display: flex;
+    justify-content: center;
+  }
+  .about-video-placeholder {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 16/9;
+    background: var(--color-bg-dark);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+    box-shadow: var(--shadow-lg);
+  }
+  .about-video-placeholder:hover {
+    opacity: 0.9;
+  }
+  .about-label {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .about-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-heading-2);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  .about-desc {
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+  }
+  .about-cta {
+    display: inline-block;
+  }
+  @media (max-width: 48em) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-visual {
+      order: -1;
+    }
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const episodes = [
+  { num: 102, title: 'The Future of Office: Flexible, Amenitized, and Smaller', date: 'July 8, 2026', guest: 'Sarah Chen, CBRE' },
+  { num: 101, title: 'Why Data Center Demand Is Reshaping Industrial CRE', date: 'July 1, 2026', guest: 'James Park, JLL' },
+  { num: 100, title: 'Milestone Episode: 100 Episodes of No Cap!', date: 'June 24, 2026', guest: 'The Brick Wire Team' },
+  { num: 99, title: 'Multifamily Investment Strategy in a High-Rate Environment', date: 'June 17, 2026', guest: 'Maria Torres, Greystar' },
+  { num: 98, title: 'PropTech Investment Trends to Watch in H2 2026', date: 'June 10, 2026', guest: 'Alex Rivera, MetaProp' },
+  { num: 97, title: 'Texas vs. New York: Which Market Wins for CRE Investment?', date: 'June 3, 2026', guest: 'David Kim, Hines' },
+];
+---
+
+<PageLayout title="No Cap by Brick Wire" description="The commercial real estate podcast that cuts through the noise.">
+  <section class="podcast-page section-padding">
+    <div class="container">
+      <div class="podcast-header">
+        <div class="podcast-branding">
+          <div class="podcast-cover"></div>
+          <div>
+            <h1>No Cap</h1>
+            <p class="podcast-tagline">by Brick Wire</p>
+            <p class="podcast-desc">The commercial real estate podcast that cuts through the noise. Weekly conversations with industry leaders, investors, and innovators.</p>
+            <div class="podcast-platforms">
+              <a href="#" class="platform-link" aria-label="Listen on Spotify">Spotify</a>
+              <a href="#" class="platform-link" aria-label="Listen on Apple Podcasts">Apple Podcasts</a>
+              <a href="#" class="platform-link" aria-label="Listen on YouTube">YouTube</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="episodes-list">
+        <h2>Latest Episodes</h2>
+        {episodes.map(ep => (
+          <div class="episode-card">
+            <div class="episode-number">#{ep.num}</div>
+            <div class="episode-body">
+              <h3 class="episode-title"><a href={`/podcast/${ep.num}/`}>{ep.title}</a></h3>
+              <p class="episode-meta">{ep.date} &middot; {ep.guest}</p>
+            </div>
+            <div class="episode-actions">
+              <button class="btn btn-sm" aria-label="Play episode">Play</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .podcast-page { padding-top: calc(var(--header-height) + 2rem); }
+  .podcast-header { margin-bottom: 3rem; }
+  .podcast-branding { display: flex; gap: 2rem; align-items: flex-start; }
+  .podcast-cover {
+    width: 200px;
+    height: 200px;
+    background: var(--color-accent);
+    border-radius: 1rem;
+    flex-shrink: 0;
+    background-image: radial-gradient(circle at 30% 30%, var(--color-accent-light) 0%, var(--color-accent) 100%);
+  }
+  .podcast-tagline { font-size: 0.9375rem; color: var(--color-accent); margin-bottom: 0.5rem; }
+  .podcast-header h1 { font-family: var(--font-heading); font-size: var(--fs-heading-1); margin: 0; }
+  .podcast-desc { font-size: 1rem; color: var(--color-text-muted); max-width: 36rem; line-height: 1.6; margin-bottom: 1.5rem; }
+  .podcast-platforms { display: flex; gap: 0.75rem; }
+  .platform-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text-body);
+    transition: all var(--transition-fast);
+  }
+  .platform-link:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .episodes-list h2 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 1.5rem; }
+  .episode-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .episode-number {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    width: 3.5rem;
+  }
+  .episode-body { flex: 1; }
+  .episode-title { font-size: 1.125rem; font-weight: 600; }
+  .episode-title a { text-decoration: none; color: inherit; transition: color var(--transition-fast); }
+  .episode-title a:hover { color: var(--color-accent); }
+  .episode-meta { font-size: 0.8125rem; color: var(--color-text-muted); }
+  .btn-sm { padding: 0.5rem 1.25rem; font-size: 0.8125rem; }
+  @media (max-width: 48em) {
+    .podcast-branding { flex-direction: column; }
+    .podcast-cover { width: 120px; height: 120px; }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+import PageLayout from '../../../../layouts/PageLayout.astro';
+export async function getStaticPaths() {
+  return [
+    { params: { edition: 'national', slug: 'construction-costs-climb' } },
+    { params: { edition: 'new-york', slug: 'nyc-conversion-halted' } },
+  ];
+}
+const { edition, slug } = Astro.params;
+---
+
+<PageLayout title="Newsletter Issue">
+  <article class="issue-page section-padding">
+    <div class="container" style="max-width: var(--container-narrow);">
+      <div class="issue-meta">
+        <span class="issue-edition">{edition?.charAt(0).toUpperCase()}{edition?.slice(1)} Edition</span>
+        <time>July 10, 2026</time>
+      </div>
+      <h1 class="issue-title">Construction Costs Climb as Labor Shortages and Trade Policy Tighten the Market</h1>
+      <div class="issue-body">
+        <p>JLL says rising labor shortages, tariffs and data center demand are pushing construction costs higher across the United States. The firm's latest report indicates that construction costs have increased by 7.2% year-over-year, driven by a combination of factors including tight labor markets, trade policy uncertainty, and unprecedented demand from data center development.</p>
+        <p>"We're seeing a perfect storm of cost pressures that shows no signs of abating," said a JLL analyst. "Labor shortages alone are adding 3-4% to project costs as developers compete for a limited pool of skilled workers."</p>
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>Construction costs up 7.2% YoY</li>
+          <li>Data center demand driving material prices</li>
+          <li>Tariff policy creating uncertainty in supply chains</li>
+        </ul>
+      </div>
+      <div class="issue-footer">
+        <p>Thank you for reading the {edition} edition of the Brick Wire newsletter.</p>
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .issue-page { padding-top: calc(var(--header-height) + 2rem); }
+  .issue-meta { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .issue-edition { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; color: var(--color-accent); }
+  .issue-meta time { font-size: 0.875rem; color: var(--color-text-muted); }
+  .issue-title { font-size: var(--fs-heading-1); line-height: 1.15; margin-bottom: 2rem; }
+  .issue-body p { font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; color: var(--color-text-body); }
+  .issue-body h2 { font-family: var(--font-heading); font-size: 1.5rem; margin: 2rem 0 1rem; }
+  .issue-body ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  .issue-body li { font-size: 1.125rem; line-height: 1.8; color: var(--color-text-body); }
+  .issue-footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
+  .issue-footer p { font-size: 0.9375rem; color: var(--color-text-muted); }
+</style>

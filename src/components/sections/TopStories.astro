@@ -1,0 +1,603 @@
+---
+const featuredStory = {
+  title: 'US Industrial Market Shows Signs Of Stabilization In 2026',
+  category: 'National',
+  subcategory: 'Industrial',
+  date: 'July 12, 2026',
+  image: 'https://picsum.photos/seed/industrial-stabilization/600/400',
+  slug: 'us-industrial-market-shows-signs-of-stabilization-in-2026',
+  excerpt: 'US industrial market conditions are stabilizing as rents flatten, e-commerce grows, and warehouse demand shifts across major metros.',
+};
+
+const stories = [
+  {
+    title: 'The AI Architecture Real Estate Investment Firms Are Choosing',
+    category: 'National',
+    subcategory: 'Proptech',
+    date: 'June 25, 2026',
+    image: 'https://picsum.photos/seed/ai-architecture/200/134',
+    slug: 'ai-architecture-real-estate',
+    sponsored: true,
+  },
+  {
+    title: 'Senior Housing Occupancy Nears 90% as Supply Lags',
+    category: 'National',
+    subcategory: 'Multifamily',
+    date: 'July 12, 2026',
+    image: 'https://picsum.photos/seed/senior-housing/200/134',
+    slug: 'senior-housing-occupancy-nears-90',
+  },
+  {
+    title: 'Bank Multifamily Delinquencies Hit 13-Year High',
+    category: 'National',
+    subcategory: 'Lending',
+    date: 'July 12, 2026',
+    image: 'https://picsum.photos/seed/bank-delinquencies/200/134',
+    slug: 'bank-multifamily-delinquencies-hit-13-year-high',
+  },
+  {
+    title: 'The Secret to Retaining Investors? A Specialized Real Estate CRM',
+    category: 'National',
+    subcategory: 'Proptech',
+    date: 'June 17, 2026',
+    image: 'https://picsum.photos/seed/crm-retention/200/134',
+    slug: 'retaining-investors-crm',
+    sponsored: true,
+  },
+  {
+    title: 'Ohio Tops CNBC\'s Business Rankings for the First Time',
+    category: 'Ohio',
+    subcategory: 'Data',
+    date: 'July 12, 2026',
+    image: 'https://picsum.photos/seed/ohio-rankings/200/134',
+    slug: 'ohio-tops-cnbcs-business-rankings',
+  },
+];
+
+const tools = [
+  {
+    title: 'Multifamily Investment Stress Testing: A Must-Have Tool for Passive Investors',
+    category: 'Multifamily',
+    subcategory: 'Tools',
+    date: 'April 01, 2025',
+    image: 'https://picsum.photos/seed/stress-test/120/80',
+    slug: 'multifamily-investment-stress-testing',
+  },
+  {
+    title: 'Return on Investment (ROI) Calculator: Your Guide to Maximizing Profits',
+    category: 'Multifamily',
+    subcategory: 'Tools',
+    date: 'December 05, 2023',
+    image: 'https://picsum.photos/seed/roi-calc/120/80',
+    slug: 'roi-calculator-multifamily',
+  },
+  {
+    title: 'Loan Sizing Calculator: How Lenders Determine Your Commercial Real Estate Loan',
+    category: 'Multifamily',
+    subcategory: 'Tools',
+    date: 'December 05, 2023',
+    image: 'https://picsum.photos/seed/loan-size/120/80',
+    slug: 'loan-sizing-calculator',
+  },
+  {
+    title: 'Loan Amortization Calculator: A Guide to Amortization Tables',
+    category: 'Models',
+    subcategory: 'Tools',
+    date: 'December 05, 2023',
+    image: 'https://picsum.photos/seed/amort-calc/120/80',
+    slug: 'loan-amortization-calculator',
+  },
+];
+---
+
+<section class="top-stories-section">
+  <div class="container">
+    <div class="top-stories-section-headers">
+      <div class="top-stories-header">
+        <h2 class="top-stories-title">TOP STORIES</h2>
+        <div class="top-stories-accent"></div>
+      </div>
+      <div class="tools-header">
+        <h2 class="tools-title">RESOURCES & TOOLS</h2>
+        <div class="tools-accent"></div>
+      </div>
+    </div>
+
+    <div class="top-stories-row">
+      <!-- Column 1: Featured story (35%) -->
+      <div class="col-featured">
+        <a href={`/briefs/${featuredStory.slug}/`} class="card card--featured">
+          <div class="card__image">
+            <img src={featuredStory.image} alt="" loading="eager" />
+          </div>
+          <div class="card__body">
+            <div class="card__tags">
+              <span class="tag">{featuredStory.category}</span>
+              {featuredStory.subcategory && <span class="tag tag--muted">{featuredStory.subcategory}</span>}
+            </div>
+            <h3 class="card__title">{featuredStory.title}</h3>
+            <p class="card__excerpt">{featuredStory.excerpt}</p>
+            <span class="card__date">{featuredStory.date}</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Column 2: Other stories (30%) -->
+      <div class="col-stories">
+        {stories.map(story => (
+          <a href={`/briefs/${story.slug}/`} class="card card--row">
+            <div class="card__body">
+              <div class="card__tags">
+                <span class="tag">{story.category}</span>
+                {story.subcategory && <span class="tag tag--muted">{story.subcategory}</span>}
+              </div>
+              <h4 class="card__title card__title--sm">{story.title}</h4>
+              <div class="card__meta">
+                <span class="card__date">{story.date}</span>
+                {story.sponsored && (
+                  <span class="badge">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    SPONSORED
+                  </span>
+                )}
+              </div>
+            </div>
+            <div class="card__thumb">
+              <img src={story.image} alt="" loading="lazy" />
+            </div>
+          </a>
+        ))}
+        <span class="cta-wrap"><a href="/briefs/" class="cta-link">View All Briefs</a></span>
+      </div>
+
+      <!-- Column 3: Resources & Tools (35%) -->
+      <div class="col-tools">
+        <div class="tools-list">
+          {tools.map(tool => (
+            <a href={`/tools/${tool.slug}/`} class="tool-row">
+              <div class="tool-row__body">
+                <div class="card__tags">
+                  <span class="tag">{tool.category}</span>
+                  <span class="tag tag--muted">{tool.subcategory}</span>
+                </div>
+                <h4 class="tool-row__title">{tool.title}</h4>
+                <span class="card__date">{tool.date}</span>
+              </div>
+              <div class="tool-row__thumb">
+                <img src={tool.image} alt="" loading="lazy" />
+              </div>
+            </a>
+          ))}
+        </div>
+        <span class="cta-wrap"><a href="/tools/" class="cta-link">View More</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .top-stories-section {
+    padding: 4rem 0;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Section Headers Row */
+  .top-stories-section-headers {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 2.5rem;
+  }
+
+  .top-stories-header {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 calc(35% - 1.25rem);
+  }
+
+  .top-stories-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.375rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #111019;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .top-stories-accent {
+    width: 70px;
+    height: 3px;
+    background: #ca4825;
+    border-radius: 2px;
+  }
+
+  .tools-header {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 calc(35% - 1.25rem);
+  }
+
+  .tools-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.375rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #111019;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .tools-accent {
+    width: 70px;
+    height: 3px;
+    background: #ca4825;
+    border-radius: 2px;
+  }
+
+  /* 3-column row: 35 | 30 | 35 */
+  .top-stories-row {
+    display: grid;
+    grid-template-columns: 35fr 30fr 35fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  /* Column 1 — Featured */
+  .col-featured {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Column 2 — Stories list */
+  .col-stories {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e7e7e7;
+  }
+
+  /* Column 3 — Tools */
+  .col-tools {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e7e7e7;
+    padding-top: 0;
+  }
+
+  .tools-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Shared Card Styles */
+  .card {
+    display: flex;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.15s ease;
+  }
+
+  .card:hover {
+    opacity: 0.85;
+  }
+
+  .card__image {
+    width: 100%;
+    aspect-ratio: 430 / 310;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f7f7f7;
+    margin-bottom: 1rem;
+  }
+
+  .card__image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .card--featured {
+    flex-direction: column;
+  }
+
+  .card--featured:hover .card__image img {
+    transform: scale(1.02);
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+  }
+
+  .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ca4825;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tag--muted {
+    font-weight: 600;
+    color: #8c8c8c;
+  }
+
+  .card__title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #111019;
+    margin: 0;
+  }
+
+  .card__title--sm {
+    font-size: 0.875rem;
+  }
+
+  .card__title:hover {
+    color: #ca4825;
+  }
+
+  .card__excerpt {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: #5c5b5b;
+    margin: 0;
+  }
+
+  .card__date {
+    font-size: 0.8rem;
+    color: #8c8c8c;
+  }
+
+  .card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8c8c8c;
+    background: #f3f4f6;
+    padding: 0.1rem 0.4rem;
+    border-radius: 9999px;
+  }
+
+  .badge svg {
+    opacity: 0.6;
+  }
+
+  /* Card row variant (horizontal: body + thumb) */
+  .card--row {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid #e7e7e7;
+    gap: 0.875rem;
+  }
+
+  .card--row .card__body {
+    flex: 1;
+    gap: 0.3rem;
+  }
+
+  .card--row .card__thumb {
+    width: 95px;
+    flex-shrink: 0;
+    aspect-ratio: 95 / 65;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f7f7f7;
+  }
+
+  .card--row .card__thumb img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Tool row */
+  .tool-row {
+    display: flex;
+    align-items: center;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid #e7e7e7;
+    text-decoration: none;
+    color: inherit;
+    gap: 0.875rem;
+    transition: opacity 0.15s ease;
+  }
+
+  .tool-row:hover {
+    opacity: 0.85;
+  }
+
+  .tool-row__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .tool-row__title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #111019;
+    margin: 0;
+  }
+
+  .tool-row:hover .tool-row__title {
+    color: #ca4825;
+  }
+
+  .tool-row__thumb {
+    width: 95px;
+    flex-shrink: 0;
+    aspect-ratio: 95 / 65;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f7f7f7;
+  }
+
+  .tool-row__thumb img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* CTA Links */
+  .cta-link {
+    display: inline;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #111019;
+    text-decoration: none;
+    border-bottom: 3px solid #ca4825;
+    padding-bottom: 3px;
+    transition: color 0.15s ease;
+  }
+
+  .cta-link:hover {
+    color: #ca4825;
+  }
+
+  .cta-wrap {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  .top-stories-footer {
+    margin-top: 1.5rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .top-stories-section-headers {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .top-stories-header,
+    .tools-header {
+      flex: 0 0 calc(50% - 0.75rem);
+    }
+
+    .top-stories-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .col-featured {
+      grid-column: 1 / -1;
+    }
+
+    .col-stories {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .col-tools {
+      grid-column: 1 / -1;
+      border-top: 1px solid #e7e7e7;
+      padding-top: 2rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .top-stories-section {
+      padding: 3rem 0;
+    }
+
+    .top-stories-section-headers {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .top-stories-header,
+    .tools-header {
+      flex: none;
+      width: 100%;
+    }
+
+    .top-stories-row {
+      grid-template-columns: 1fr;
+    }
+
+    .col-featured {
+      grid-column: auto;
+    }
+
+    .col-tools {
+      grid-column: auto;
+    }
+
+    .card--row {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .card--row .card__thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    .tool-row {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .tool-row__thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    .card__image {
+      aspect-ratio: 16 / 9;
+    }
+
+    .card--featured .card__title {
+      font-size: 1.25rem;
+    }
+  }
+</style>

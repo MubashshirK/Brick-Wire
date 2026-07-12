@@ -1,0 +1,121 @@
+---
+<section class="podcast-section section-dark section-padding">
+  <div class="container">
+    <div class="podcast-grid">
+      <div class="podcast-content">
+        <span class="podcast-label">PODCAST</span>
+        <h2 class="podcast-title">No Cap by Brick Wire</h2>
+        <p class="podcast-desc">
+          No Cap by Brick Wire is a weekly podcast offering an unfiltered look into commercial real estate's biggest trends and influential figures.
+        </p>
+        <div class="podcast-actions">
+          <a href="/podcast/" class="btn btn-primary">Listen Now</a>
+          <div class="podcast-platforms">
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954"><circle cx="12" cy="12" r="10"/><path d="M6 9.5c4-2 10-1.5 13 .5M7.5 13c3-1.5 8-1 10.5.5M9 16.5c2-1 5.5-.5 7 .5" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Podcasts">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#D56DFB"><circle cx="12" cy="12" r="10"/><path d="M12 6a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V9a3 3 0 0 0-3-3z" stroke="white" stroke-width="1" fill="none"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF0000"><circle cx="12" cy="12" r="10"/><path d="M10 8.5v7l6-3.5l-6-3.5z" fill="white"/></svg>
+            </a>
+          </div>
+        </div>
+        <p class="podcast-platforms-text">Listen on Spotify, Apple Podcast and Youtube.</p>
+      </div>
+      <div class="podcast-art">
+        <div class="podcast-album-art">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+            <rect width="200" height="200" rx="16" fill="var(--color-accent)"/>
+            <text x="100" y="80" text-anchor="middle" font-size="20" font-weight="700" fill="white">No Cap</text>
+            <text x="100" y="110" text-anchor="middle" font-size="14" fill="white">Brick Wire</text>
+            <circle cx="100" cy="145" r="20" fill="none" stroke="white" stroke-width="2"/>
+            <path d="M92 136l12 8l-12 8z" fill="white"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .podcast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .podcast-label {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .podcast-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-heading-2);
+    margin-bottom: 1rem;
+  }
+  .podcast-desc {
+    color: var(--color-accent-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 90%;
+  }
+  .podcast-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .podcast-platforms {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .podcast-platforms a {
+    transition: transform var(--transition-fast);
+    display: flex;
+  }
+  .podcast-platforms a:hover {
+    transform: scale(1.1);
+  }
+  .podcast-platforms-text {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+  .podcast-art {
+    display: flex;
+    justify-content: center;
+  }
+  .podcast-album-art {
+    width: 200px;
+    height: 200px;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .podcast-album-art svg {
+    width: 100%;
+    height: 100%;
+  }
+  @media (max-width: 48em) {
+    .podcast-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .podcast-desc {
+      max-width: 100%;
+    }
+    .podcast-actions {
+      justify-content: center;
+    }
+    .podcast-art {
+      order: -1;
+    }
+  }
+</style>

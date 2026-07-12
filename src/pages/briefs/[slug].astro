@@ -1,0 +1,61 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'airbnb-buys-manhattan-office' } },
+    { params: { slug: 'dallas-miami-financial-hub' } },
+  ];
+}
+const { slug } = Astro.params;
+---
+
+<PageLayout title="Brief">
+  <article class="article-page section-padding">
+    <div class="container" style="max-width: var(--container-narrow);">
+      <div class="article-meta">
+        <span class="article-category">Office</span>
+        <time>July 10, 2026</time>
+      </div>
+      <h1 class="article-title">Airbnb Buys Manhattan Office Despite NYC Rental Crackdown</h1>
+      <div class="article-share">
+        <span>Share:</span>
+        <a href="#" aria-label="Copy link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM12 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/><path d="M6.5 9.5l3 1M9.5 5.5l-3 1"/></svg>
+        </a>
+      </div>
+      <div class="article-hero-image">
+        <div class="article-hero-placeholder"></div>
+      </div>
+      <div class="article-body">
+        <p>Airbnb's $81.5M acquisition of a landmark NYC office signals a long-term presence in a city with strict short-term rental laws. The company purchased a 12-story building in Manhattan's Flatiron District, marking one of the largest office acquisitions by a tech company in the city this year.</p>
+        <p>The move comes despite ongoing regulatory challenges facing short-term rentals in New York City, where strict registration requirements and occupancy limits have significantly reduced the available inventory.</p>
+        <p>"This investment demonstrates our commitment to New York and our confidence in the future of the city," said an Airbnb spokesperson.</p>
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .article-page { padding-top: calc(var(--header-height) + 2rem); }
+  .article-meta { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .article-category { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; color: var(--color-accent); }
+  .article-meta time { font-size: 0.875rem; color: var(--color-text-muted); }
+  .article-title { font-size: var(--fs-heading-1); line-height: 1.15; margin-bottom: 1.5rem; }
+  .article-share { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; }
+  .article-share span { font-size: 0.875rem; color: var(--color-text-muted); }
+  .article-share a { color: var(--color-text-muted); transition: color var(--transition-fast); }
+  .article-share a:hover { color: var(--color-accent); }
+  .article-hero-placeholder {
+    width: 100%;
+    padding-bottom: 52%;
+    background: var(--color-bg-subtle);
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+  }
+  .article-body p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-body);
+  }
+</style>

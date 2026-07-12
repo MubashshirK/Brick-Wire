@@ -1,0 +1,67 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+
+const reports = [
+  { title: 'Q2 2026 National Industrial Market Report', date: 'July 2026', type: 'Quarterly' },
+  { title: 'Q2 2026 National Office Market Report', date: 'July 2026', type: 'Quarterly' },
+  { title: 'Q2 2026 Multifamily Market Report', date: 'June 2026', type: 'Quarterly' },
+  { title: 'H1 2026 Investment Sales Report', date: 'June 2026', type: 'Special' },
+  { title: '2026 Construction Cost Outlook', date: 'May 2026', type: 'Special' },
+  { title: 'Q1 2026 National Retail Market Report', date: 'April 2026', type: 'Quarterly' },
+];
+---
+
+<PageLayout title="Market Reports" description="Quarterly and special reports on commercial real estate market conditions across the United States.">
+  <section class="section-padding">
+    <div class="container">
+      <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Market Reports</h1>
+      <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Quarterly and special reports on CRE market conditions across the US.</p>
+      <div class="reports-grid">
+        {reports.map(r => (
+          <div class="report-card">
+            <div class="report-type">{r.type}</div>
+            <h3 class="report-title">{r.title}</h3>
+            <div class="report-date">{r.date}</div>
+            <a href="#" class="report-download">Download PDF</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .report-card {
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: box-shadow var(--transition-fast);
+  }
+  .report-card:hover { box-shadow: var(--shadow-md); }
+  .report-type {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+  .report-title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .report-date { font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 1rem; }
+  .report-download {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .report-download:hover { text-decoration: underline; }
+</style>

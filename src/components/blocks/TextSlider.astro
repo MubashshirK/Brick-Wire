@@ -1,0 +1,95 @@
+---
+interface Props {
+  words: string[];
+}
+
+const { words } = Astro.props;
+---
+
+<span class="text-slider" id="text-slider">
+  <ul>
+    {words.map((word, i) => (
+      <li class:list={{ 'is-active': i === 0 }} data-index={i}>{word}</li>
+    ))}
+  </ul>
+</span>
+
+<script>
+  class TextSlider {
+    el: HTMLElement;
+    items: HTMLLIElement[];
+    current: number;
+
+    constructor(el: HTMLElement) {
+      this.el = el;
+      this.items = [...el.querySelectorAll('li')];
+      this.current = 0;
+      setInterval(() => this.next(), 3000);
+    }
+
+    next() {
+      const prev = this.current;
+      this.current = (this.current + 1) % this.items.length;
+      this.items[prev].classList.remove('is-active');
+      this.items[prev].classList.add('is-prev');
+      this.items[this.current].classList.remove('is-prev');
+      this.items[this.current].classList.add('is-next');
+      setTimeout(() => {
+        this.items[prev].classList.remove('is-prev');
+        this.items[this.current].classList.remove('is-next');
+        this.items[this.current].classList.add('is-active');
+      }, 300);
+    }
+  }
+
+  const el = document.getElementById('text-slider');
+  if (el) new TextSlider(el);
+</script>
+
+<style>
+  .text-slider {
+    display: inline-block;
+    position: relative;
+    overflow-y: clip;
+    vertical-align: bottom;
+    color: var(--color-accent);
+  }
+  .text-slider ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+    position: relative;
+  }
+  .text-slider li {
+    display: none;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: none;
+    white-space: nowrap;
+  }
+  .text-slider li.is-active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .text-slider li.is-next {
+    display: block;
+    animation: slide-in 0.25s ease-in-out forwards;
+  }
+  .text-slider li.is-prev {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    animation: slide-out 0.25s ease-in-out forwards;
+  }
+  @keyframes slide-in {
+    0% { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-out {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-100%); }
+  }
+</style>
