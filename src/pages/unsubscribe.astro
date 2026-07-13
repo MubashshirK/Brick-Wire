@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Unsubscribed — Brick Wire" description="You have been unsubscribed from Brick Wire newsletters.">
+  <main class="min-h-screen flex items-center justify-center px-4">
+    <div class="text-center max-w-lg">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">You've been unsubscribed</h1>
+      <p class="text-lg text-gray-600 mb-8">
+        You've been successfully removed from our mailing list. You won't receive any more emails from us.
+      </p>
+      <p class="text-gray-500 mb-8">
+        Changed your mind? You can always
+        <a href="/newsletter-signup/" class="text-[#ca4825] font-semibold underline">subscribe again</a>.
+      </p>
+      <a
+        href="/"
+        class="inline-block px-6 py-3 bg-[#ca4825] text-white font-semibold rounded-lg hover:bg-[#b33d1f] transition-colors"
+      >
+        Back to Brick Wire
+      </a>
+    </div>
+  </main>
+</BaseLayout>

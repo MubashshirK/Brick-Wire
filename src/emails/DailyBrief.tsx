@@ -5,8 +5,6 @@ import { EmailFooter } from './components/EmailFooter';
 import { ArticleBlock } from './components/ArticleBlock';
 import { Divider } from './components/Divider';
 
-const baseUrl = process.env.BASE_URL || 'https://brickwire.com';
-
 interface Article {
   title: string;
   slug: string;
@@ -20,7 +18,8 @@ interface Props {
   date?: string;
   articles?: Article[];
   sponsorMessage?: string;
-  unsubscribeLink?: string;
+  unsubscribeToken?: string;
+  baseUrl?: string;
 }
 
 export default function DailyBrief({
@@ -28,14 +27,18 @@ export default function DailyBrief({
   date = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
   articles = defaultArticles,
   sponsorMessage,
-  unsubscribeLink,
+  unsubscribeToken,
+  baseUrl: propBaseUrl,
 }: Props) {
+  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+  const unsubscribeUrl = unsubscribeToken ? `${baseUrl}/api/unsubscribe?token=${unsubscribeToken}` : undefined;
+
   return (
     <Html>
       <Head />
       <Body style={body}>
         <Container style={container}>
-          <EmailHeader previewText={`${edition} Brief — ${date}`} />
+          <EmailHeader previewText={`${edition} Brief — ${date}`} baseUrl={baseUrl} />
 
           <Section style={editionSection}>
             <Text style={editionLabel}>{edition} Brief</Text>
@@ -44,7 +47,7 @@ export default function DailyBrief({
 
           <Section style={articlesSection}>
             {articles.map((article, i) => (
-              <ArticleBlock key={i} {...article} />
+              <ArticleBlock key={i} {...article} baseUrl={baseUrl} />
             ))}
           </Section>
 
@@ -65,7 +68,7 @@ export default function DailyBrief({
             <Link href={`${baseUrl}/newsletters/${edition.toLowerCase()}/`} style={footerLink}>Browse {edition} archives</Link>
           </Section>
 
-          <EmailFooter unsubscribeLink={unsubscribeLink} />
+          <EmailFooter baseUrl={baseUrl} unsubscribeUrl={unsubscribeUrl} />
         </Container>
       </Body>
     </Html>

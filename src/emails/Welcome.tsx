@@ -1,21 +1,24 @@
 import React from 'react';
-import { Html, Head, Body, Container, Section, Text, Link, Img } from '@react-email/components';
+import { Html, Head, Body, Container, Section, Text, Link } from '@react-email/components';
 import { EmailHeader } from './components/EmailHeader';
 import { EmailFooter } from './components/EmailFooter';
 
-const baseUrl = process.env.BASE_URL || 'https://brickwire.com';
-
 interface Props {
   firstName?: string;
+  unsubscribeToken?: string;
+  baseUrl?: string;
 }
 
-export default function Welcome({ firstName = 'there' }: Props) {
+export default function Welcome({ firstName = 'there', unsubscribeToken, baseUrl: propBaseUrl }: Props) {
+  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+  const unsubscribeUrl = unsubscribeToken ? `${baseUrl}/api/unsubscribe?token=${unsubscribeToken}` : undefined;
+
   return (
     <Html>
       <Head />
       <Body style={body}>
         <Container style={container}>
-          <EmailHeader previewText="Welcome to Brick Wire — your daily edge in real estate." />
+          <EmailHeader previewText="Welcome to Brick Wire — your daily edge in real estate." baseUrl={baseUrl} />
 
           <Section style={section}>
             <Text style={greeting}>Hi {firstName},</Text>
@@ -52,7 +55,7 @@ export default function Welcome({ firstName = 'there' }: Props) {
             </Text>
           </Section>
 
-          <EmailFooter />
+          <EmailFooter baseUrl={baseUrl} unsubscribeUrl={unsubscribeUrl} />
         </Container>
       </Body>
     </Html>

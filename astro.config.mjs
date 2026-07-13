@@ -6,7 +6,7 @@ import node from '@astrojs/node';
 
 export default defineConfig({
   site: 'https://brickwire.com',
-  output: 'static',
+  output: 'server',
   adapter: node({ mode: 'standalone' }),
   integrations: [
     sanity({

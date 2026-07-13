@@ -1,9 +1,12 @@
 export const prerender = false;
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { render } from '@react-email/render';
+import React from 'react';
+import Welcome from '../../emails/Welcome';
+import { addSubscriber } from '../../lib/supabase';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY || '');
-const AUDIENCE_ID = import.meta.env.RESEND_AUDIENCE_ID || '';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -18,25 +21,34 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Email is required' }), { status: 400 });
     }
 
-    if (AUDIENCE_ID) {
-      await resend.contacts.create({
-        email,
-        firstName: firstName || '',
-        lastName: lastName || '',
-        audienceId: AUDIENCE_ID,
-        unsubscribed: false,
-      });
+    const { data: subscriber, error: subError } = await addSubscriber({
+      email,
+      firstName,
+      lastName,
+      publication,
+      source: formLocation,
+    });
+
+    if (subError) {
+      return new Response(JSON.stringify({ error: subError }), { status: 500 });
     }
 
-    try {
+    if (subscriber) {
+      const baseUrl = import.meta.env.BASE_URL || 'https://brickwire.com';
+      const html = render(
+        React.createElement(Welcome, {
+          firstName: firstName || 'there',
+          unsubscribeToken: subscriber.unsubscribe_token,
+          baseUrl,
+        })
+      );
+
       await resend.emails.send({
         from: 'Brick Wire <hello@brickwire.com>',
         to: email,
         subject: 'Welcome to Brick Wire!',
-        html: `<h1>Welcome to Brick Wire!</h1><p>You're now subscribed to the daily brief.</p>`,
+        html,
       });
-    } catch {
-      // welcome email is optional
     }
 
     const redirectUrl = new URL('/newsletter-signup/?success=true', request.url);

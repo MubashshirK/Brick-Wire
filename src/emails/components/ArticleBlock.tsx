@@ -1,17 +1,18 @@
 import React from 'react';
 import { View, Text, Link } from '@react-email/components';
 
-const baseUrl = process.env.BASE_URL || 'https://brickwire.com';
-
 interface Props {
   title: string;
   excerpt: string;
   slug: string;
   category?: string;
   sponsored?: boolean;
+  baseUrl?: string;
 }
 
-export function ArticleBlock({ title, excerpt, slug, category, sponsored }: Props) {
+export function ArticleBlock({ title, excerpt, slug, category, sponsored, baseUrl: propBaseUrl }: Props) {
+  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+
   return (
     <View style={article}>
       {sponsored && <Text style={sponsoredBadge}>Sponsored</Text>}

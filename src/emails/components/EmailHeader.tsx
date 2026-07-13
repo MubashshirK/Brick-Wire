@@ -3,11 +3,12 @@ import { View, Text, Img, Section } from '@react-email/components';
 
 interface Props {
   previewText?: string;
+  baseUrl?: string;
 }
 
-const baseUrl = process.env.BASE_URL || 'https://brickwire.com';
+export function EmailHeader({ previewText, baseUrl: propBaseUrl }: Props) {
+  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
 
-export function EmailHeader({ previewText }: Props) {
   return (
     <Section style={headerSection}>
       {previewText && (
@@ -15,7 +16,7 @@ export function EmailHeader({ previewText }: Props) {
       )}
       <View style={logoRow}>
         <Img
-          src={`${baseUrl}/images/logo.png`}
+          src={`${baseUrl}/images/brick-wire-logo.png`}
           alt="Brick Wire"
           width="48"
           height="48"

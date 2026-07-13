@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, Link, Hr } from '@react-email/components';
 
-const baseUrl = process.env.BASE_URL || 'https://brickwire.com';
-
 interface Props {
-  unsubscribeLink?: string;
+  unsubscribeUrl?: string;
+  baseUrl?: string;
 }
 
-export function EmailFooter({ unsubscribeLink }: Props) {
+export function EmailFooter({ unsubscribeUrl, baseUrl: propBaseUrl }: Props) {
+  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+
   return (
     <View style={footer}>
       <Hr style={hr} />
@@ -23,9 +24,9 @@ export function EmailFooter({ unsubscribeLink }: Props) {
         <Link href={`${baseUrl}/terms-of-use/`} style={link}>Terms</Link>
         <Link href={`${baseUrl}/contact-us/`} style={link}>Contact</Link>
       </View>
-      {unsubscribeLink && (
+      {unsubscribeUrl && (
         <Text style={unsubscribe}>
-          <Link href={unsubscribeLink} style={unsubscribeLinkStyle}>Unsubscribe</Link>
+          <Link href={unsubscribeUrl} style={unsubscribeLinkStyle}>Unsubscribe</Link>
           {' '}from this newsletter.
         </Text>
       )}
