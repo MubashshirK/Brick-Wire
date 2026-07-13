@@ -1,92 +1,14 @@
 ---
-const featuredStory = {
-  title: 'US Industrial Market Shows Signs Of Stabilization In 2026',
-  category: 'National',
-  subcategory: 'Industrial',
-  date: 'July 12, 2026',
-  image: 'https://picsum.photos/seed/industrial-stabilization/600/400',
-  slug: 'us-industrial-market-shows-signs-of-stabilization-in-2026',
-  excerpt: 'US industrial market conditions are stabilizing as rents flatten, e-commerce grows, and warehouse demand shifts across major metros.',
-};
-
-const stories = [
-  {
-    title: 'The AI Architecture Real Estate Investment Firms Are Choosing',
-    category: 'National',
-    subcategory: 'Proptech',
-    date: 'June 25, 2026',
-    image: 'https://picsum.photos/seed/ai-architecture/200/134',
-    slug: 'ai-architecture-real-estate',
-    sponsored: true,
-  },
-  {
-    title: 'Senior Housing Occupancy Nears 90% as Supply Lags',
-    category: 'National',
-    subcategory: 'Multifamily',
-    date: 'July 12, 2026',
-    image: 'https://picsum.photos/seed/senior-housing/200/134',
-    slug: 'senior-housing-occupancy-nears-90',
-  },
-  {
-    title: 'Bank Multifamily Delinquencies Hit 13-Year High',
-    category: 'National',
-    subcategory: 'Lending',
-    date: 'July 12, 2026',
-    image: 'https://picsum.photos/seed/bank-delinquencies/200/134',
-    slug: 'bank-multifamily-delinquencies-hit-13-year-high',
-  },
-  {
-    title: 'The Secret to Retaining Investors? A Specialized Real Estate CRM',
-    category: 'National',
-    subcategory: 'Proptech',
-    date: 'June 17, 2026',
-    image: 'https://picsum.photos/seed/crm-retention/200/134',
-    slug: 'retaining-investors-crm',
-    sponsored: true,
-  },
-  {
-    title: 'Ohio Tops CNBC\'s Business Rankings for the First Time',
-    category: 'Ohio',
-    subcategory: 'Data',
-    date: 'July 12, 2026',
-    image: 'https://picsum.photos/seed/ohio-rankings/200/134',
-    slug: 'ohio-tops-cnbcs-business-rankings',
-  },
-];
-
+import { client, BRIEFS_QUERY, urlFor } from '../../lib/sanity';
+import type { Brief } from '../../lib/sanity';
+const allBriefs: Brief[] = await client.fetch(BRIEFS_QUERY);
+const featuredStory = allBriefs[0] || null;
+const stories = allBriefs.slice(1, 6);
 const tools = [
-  {
-    title: 'Multifamily Investment Stress Testing: A Must-Have Tool for Passive Investors',
-    category: 'Multifamily',
-    subcategory: 'Tools',
-    date: 'April 01, 2025',
-    image: 'https://picsum.photos/seed/stress-test/120/80',
-    slug: 'multifamily-investment-stress-testing',
-  },
-  {
-    title: 'Return on Investment (ROI) Calculator: Your Guide to Maximizing Profits',
-    category: 'Multifamily',
-    subcategory: 'Tools',
-    date: 'December 05, 2023',
-    image: 'https://picsum.photos/seed/roi-calc/120/80',
-    slug: 'roi-calculator-multifamily',
-  },
-  {
-    title: 'Loan Sizing Calculator: How Lenders Determine Your Commercial Real Estate Loan',
-    category: 'Multifamily',
-    subcategory: 'Tools',
-    date: 'December 05, 2023',
-    image: 'https://picsum.photos/seed/loan-size/120/80',
-    slug: 'loan-sizing-calculator',
-  },
-  {
-    title: 'Loan Amortization Calculator: A Guide to Amortization Tables',
-    category: 'Models',
-    subcategory: 'Tools',
-    date: 'December 05, 2023',
-    image: 'https://picsum.photos/seed/amort-calc/120/80',
-    slug: 'loan-amortization-calculator',
-  },
+  { title: 'Multifamily Investment Stress Testing: A Must-Have Tool for Passive Investors', category: 'Multifamily', subcategory: 'Tools', date: 'April 01, 2025', slug: 'multifamily-investment-stress-testing' },
+  { title: 'Return on Investment (ROI) Calculator: Your Guide to Maximizing Profits', category: 'Multifamily', subcategory: 'Tools', date: 'December 05, 2023', slug: 'roi-calculator-multifamily' },
+  { title: 'Loan Sizing Calculator: How Lenders Determine Your Commercial Real Estate Loan', category: 'Multifamily', subcategory: 'Tools', date: 'December 05, 2023', slug: 'loan-sizing-calculator' },
+  { title: 'Loan Amortization Calculator: A Guide to Amortization Tables', category: 'Models', subcategory: 'Tools', date: 'December 05, 2023', slug: 'loan-amortization-calculator' },
 ];
 ---
 
@@ -106,18 +28,24 @@ const tools = [
     <div class="top-stories-row">
       <!-- Column 1: Featured story (35%) -->
       <div class="col-featured">
-        <a href={`/briefs/${featuredStory.slug}/`} class="card card--featured">
-          <div class="card__image">
-            <img src={featuredStory.image} alt="" loading="eager" />
-          </div>
+        <a href={`/briefs/${featuredStory?.slug.current}/`} class="card card--featured">
+          {featuredStory?.image && (
+            <div class="card__image">
+              <img src={urlFor(featuredStory.image).width(600).url()} alt="" loading="eager" />
+            </div>
+          )}
+          {!featuredStory?.image && (
+            <div class="card__image">
+              <div style="width:100%;padding-bottom:72%;background:var(--color-bg-subtle);border-radius:6px;"></div>
+            </div>
+          )}
           <div class="card__body">
             <div class="card__tags">
-              <span class="tag">{featuredStory.category}</span>
-              {featuredStory.subcategory && <span class="tag tag--muted">{featuredStory.subcategory}</span>}
+              <span class="tag">{featuredStory?.sector?.name || featuredStory?.market?.name || ''}</span>
             </div>
-            <h3 class="card__title">{featuredStory.title}</h3>
-            <p class="card__excerpt">{featuredStory.excerpt}</p>
-            <span class="card__date">{featuredStory.date}</span>
+            <h3 class="card__title">{featuredStory?.title}</h3>
+            {featuredStory?.excerpt && <p class="card__excerpt">{featuredStory.excerpt}</p>}
+            <span class="card__date">{featuredStory?.date ? new Date(featuredStory.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''}</span>
           </div>
         </a>
       </div>
@@ -125,15 +53,14 @@ const tools = [
       <!-- Column 2: Other stories (30%) -->
       <div class="col-stories">
         {stories.map(story => (
-          <a href={`/briefs/${story.slug}/`} class="card card--row">
+          <a href={`/briefs/${story.slug.current}/`} class="card card--row">
             <div class="card__body">
               <div class="card__tags">
-                <span class="tag">{story.category}</span>
-                {story.subcategory && <span class="tag tag--muted">{story.subcategory}</span>}
+                <span class="tag">{story.sector?.name || story.market?.name || ''}</span>
               </div>
               <h4 class="card__title card__title--sm">{story.title}</h4>
               <div class="card__meta">
-                <span class="card__date">{story.date}</span>
+                <span class="card__date">{new Date(story.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                 {story.sponsored && (
                   <span class="badge">
                     <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -142,9 +69,11 @@ const tools = [
                 )}
               </div>
             </div>
-            <div class="card__thumb">
-              <img src={story.image} alt="" loading="lazy" />
-            </div>
+            {story.image && (
+              <div class="card__thumb">
+                <img src={urlFor(story.image).width(200).url()} alt="" loading="lazy" />
+              </div>
+            )}
           </a>
         ))}
         <span class="cta-wrap"><a href="/briefs/" class="cta-link">View All Briefs</a></span>

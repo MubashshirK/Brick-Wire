@@ -1,14 +1,9 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import { client, MARKET_REPORTS_QUERY } from '../lib/sanity';
+import type { MarketReport } from '../lib/sanity';
 
-const reports = [
-  { title: 'Q2 2026 National Industrial Market Report', date: 'July 2026', type: 'Quarterly' },
-  { title: 'Q2 2026 National Office Market Report', date: 'July 2026', type: 'Quarterly' },
-  { title: 'Q2 2026 Multifamily Market Report', date: 'June 2026', type: 'Quarterly' },
-  { title: 'H1 2026 Investment Sales Report', date: 'June 2026', type: 'Special' },
-  { title: '2026 Construction Cost Outlook', date: 'May 2026', type: 'Special' },
-  { title: 'Q1 2026 National Retail Market Report', date: 'April 2026', type: 'Quarterly' },
-];
+const reports: MarketReport[] = await client.fetch(MARKET_REPORTS_QUERY);
 ---
 
 <PageLayout title="Market Reports" description="Quarterly and special reports on commercial real estate market conditions across the United States.">
@@ -19,9 +14,9 @@ const reports = [
       <div class="reports-grid">
         {reports.map(r => (
           <div class="report-card">
-            <div class="report-type">{r.type}</div>
+            <div class="report-type">{r.assetClass || 'Report'}</div>
             <h3 class="report-title">{r.title}</h3>
-            <div class="report-date">{r.date}</div>
+            <div class="report-date">{r.publisher ? `${r.publisher} · ` : ''}{new Date(r.reportDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</div>
             <a href="#" class="report-download">Download PDF</a>
           </div>
         ))}

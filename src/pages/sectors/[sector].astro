@@ -1,11 +1,15 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import ArticleCard from '../../components/cards/ArticleCard.astro';
+import { client, BRIEFS_BY_SECTOR_QUERY } from '../../lib/sanity';
+import type { Brief } from '../../lib/sanity';
 export async function getStaticPaths() {
   const sectors = ['industry-news', 'investments', 'multifamily', 'industrial', 'proptech', 'lending', 'office', 'retail', 'data'];
   return sectors.map(sector => ({ params: { sector } }));
 }
 const { sector } = Astro.params;
 const sectorName = sector ? sector.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ') : '';
+const briefs: Brief[] = await client.fetch(BRIEFS_BY_SECTOR_QUERY, { sector });
 ---
 
 <PageLayout title={`${sectorName} Briefs`}>
@@ -14,7 +18,7 @@ const sectorName = sector ? sector.split('-').map(s => s.charAt(0).toUpperCase()
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 2rem;">{sectorName}</h1>
       <p style="color: var(--color-text-muted); margin-bottom: 2rem;">The latest news and trends in {sectorName}.</p>
       <div class="briefs-list">
-        <!-- Briefs filtered by sector would render here -->
+        {briefs.map(b => <ArticleCard title={b.title} slug={b.slug.current} date={b.date} category={b.sector?.name} excerpt={b.excerpt} />)}
       </div>
     </div>
   </section>

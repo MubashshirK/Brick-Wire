@@ -1,14 +1,9 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { client, PODCAST_EPISODES_QUERY } from '../../lib/sanity';
+import type { PodcastEpisode } from '../../lib/sanity';
 
-const episodes = [
-  { num: 102, title: 'The Future of Office: Flexible, Amenitized, and Smaller', date: 'July 8, 2026', guest: 'Sarah Chen, CBRE' },
-  { num: 101, title: 'Why Data Center Demand Is Reshaping Industrial CRE', date: 'July 1, 2026', guest: 'James Park, JLL' },
-  { num: 100, title: 'Milestone Episode: 100 Episodes of No Cap!', date: 'June 24, 2026', guest: 'The Brick Wire Team' },
-  { num: 99, title: 'Multifamily Investment Strategy in a High-Rate Environment', date: 'June 17, 2026', guest: 'Maria Torres, Greystar' },
-  { num: 98, title: 'PropTech Investment Trends to Watch in H2 2026', date: 'June 10, 2026', guest: 'Alex Rivera, MetaProp' },
-  { num: 97, title: 'Texas vs. New York: Which Market Wins for CRE Investment?', date: 'June 3, 2026', guest: 'David Kim, Hines' },
-];
+const episodes: PodcastEpisode[] = await client.fetch(PODCAST_EPISODES_QUERY);
 ---
 
 <PageLayout title="No Cap by Brick Wire" description="The commercial real estate podcast that cuts through the noise.">
@@ -32,12 +27,12 @@ const episodes = [
 
       <div class="episodes-list">
         <h2>Latest Episodes</h2>
-        {episodes.map(ep => (
+        {episodes.map((ep, i) => (
           <div class="episode-card">
-            <div class="episode-number">#{ep.num}</div>
+            <div class="episode-number">#{episodes.length - i}</div>
             <div class="episode-body">
-              <h3 class="episode-title"><a href={`/podcast/${ep.num}/`}>{ep.title}</a></h3>
-              <p class="episode-meta">{ep.date} &middot; {ep.guest}</p>
+              <h3 class="episode-title"><a href={`/podcast/${ep.slug.current}/`}>{ep.title}</a></h3>
+              <p class="episode-meta">{new Date(ep.episodeDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} &middot; {ep.guest}</p>
             </div>
             <div class="episode-actions">
               <button class="btn btn-sm" aria-label="Play episode">Play</button>

@@ -1,17 +1,10 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleCard from '../../components/cards/ArticleCard.astro';
+import { client, BRIEFS_QUERY } from '../../lib/sanity';
+import type { Brief } from '../../lib/sanity';
 
-const stories = [
-  { title: 'Airbnb Buys Manhattan Office Despite NYC Rental Crackdown', slug: 'airbnb-buys-manhattan-office', category: 'Office', date: 'July 10, 2026', excerpt: 'Airbnb\'s $81.5M acquisition of a landmark NYC office signals a long-term presence in a city with strict short-term rental laws.' },
-  { title: 'Dallas and Miami Challenge New York as US Financial Hub', slug: 'dallas-miami-financial-hub', category: 'Investments', date: 'July 10, 2026' },
-  { title: 'US Retailers Bet on Mini Products as Shoppers Scale Back', slug: 'retailers-mini-products', category: 'Retail', date: 'July 10, 2026' },
-  { title: 'Foreclosure Spike Unlocks Discounted Housing Deals For CRE', slug: 'foreclosure-spike-discounts', category: 'Industry News', date: 'July 10, 2026' },
-  { title: 'Apartment Concession Discounts Hit Record Depth in June 2026', slug: 'concession-discounts-record', category: 'Multifamily', date: 'July 10, 2026' },
-  { title: 'Industrial Leasing Surges as Occupiers Lock In Long-Term Deals', slug: 'industrial-leasing-surges', category: 'Industrial', date: 'July 8, 2026' },
-  { title: 'NYC Apartment Market Defies Headwinds With Nation\'s Tightest Vacancy', slug: 'nyc-apartment-market', category: 'Multifamily', date: 'July 7, 2026' },
-  { title: 'NYC\'s $125.8B Budget Puts Housing First', slug: 'nyc-budget-housing', category: 'Investments', date: 'July 2, 2026' },
-];
+const briefs: Brief[] = await client.fetch(BRIEFS_QUERY);
 ---
 
 <PageLayout title="Latest Briefs" description="Stay up to date with the latest commercial real estate news, transactions, and trends.">
@@ -47,7 +40,7 @@ const stories = [
         </div>
       </div>
       <div class="briefs-list">
-        {stories.map(s => <ArticleCard {...s} />)}
+        {briefs.map(s => <ArticleCard title={s.title} slug={s.slug.current} date={s.date} category={s.sector?.name} excerpt={s.excerpt} />)}
       </div>
     </div>
   </section>

@@ -1,29 +1,35 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { client, PODCAST_EPISODES_QUERY, PODCAST_EPISODE_QUERY } from '../../lib/sanity';
+import type { PodcastEpisode } from '../../lib/sanity';
 export async function getStaticPaths() {
-  return [
-    { params: { episode: '102' } },
-    { params: { episode: '101' } },
-  ];
+  const episodes: PodcastEpisode[] = await client.fetch(PODCAST_EPISODES_QUERY);
+  return episodes.map(ep => ({ params: { episode: ep.slug.current } }));
 }
 const { episode } = Astro.params;
+const ep: PodcastEpisode = await client.fetch(PODCAST_EPISODE_QUERY, { slug: episode });
+const episodeDate = new Date(ep.episodeDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 ---
 
-<PageLayout title="No Cap Episode">
+<PageLayout title={ep.title}>
   <article class="episode-page section-padding">
     <div class="container" style="max-width: var(--container-narrow);">
       <div class="episode-player">
         <div class="player-placeholder">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span>Episode #{episode}</span>
+          <span>Listen to Episode</span>
         </div>
       </div>
-      <h1 class="episode-page-title">The Future of Office: Flexible, Amenitized, and Smaller</h1>
-      <div class="episode-page-meta">July 8, 2026 &middot; Guest: Sarah Chen, CBRE</div>
-      <div class="episode-page-body">
-        <p>In this episode of No Cap by Brick Wire, we sit down with Sarah Chen of CBRE to discuss the evolving office landscape and what tenants are really looking for in 2026 and beyond.</p>
-        <p>From flexible lease terms to amenity-rich environments, we explore how office landlords are adapting to the new normal of hybrid work.</p>
-      </div>
+      <h1 class="episode-page-title">{ep.title}</h1>
+      <div class="episode-page-meta">{episodeDate} &middot; Guest: {ep.guest}</div>
+      {ep.description && <div class="episode-page-body"><p>{ep.description}</p></div>}
+      {(ep.spotifyUrl || ep.appleUrl || ep.youtubeUrl) && (
+        <div class="episode-platform-links" style="display:flex;gap:0.75rem;margin-top:1.5rem;">
+          {ep.spotifyUrl && <a href={ep.spotifyUrl} class="btn btn-secondary" target="_blank">Listen on Spotify</a>}
+          {ep.appleUrl && <a href={ep.appleUrl} class="btn btn-secondary" target="_blank">Listen on Apple</a>}
+          {ep.youtubeUrl && <a href={ep.youtubeUrl} class="btn btn-secondary" target="_blank">Watch on YouTube</a>}
+        </div>
+      )}
     </div>
   </article>
 </PageLayout>

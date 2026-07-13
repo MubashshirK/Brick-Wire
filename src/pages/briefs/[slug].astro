@@ -1,36 +1,42 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { client, BRIEFS_QUERY, BRIEF_QUERY, urlFor, toHTMLBody } from '../../lib/sanity';
+import type { Brief } from '../../lib/sanity';
 export async function getStaticPaths() {
-  return [
-    { params: { slug: 'airbnb-buys-manhattan-office' } },
-    { params: { slug: 'dallas-miami-financial-hub' } },
-  ];
+  const briefs: Brief[] = await client.fetch(BRIEFS_QUERY);
+  return briefs.map(b => ({ params: { slug: b.slug.current } }));
 }
 const { slug } = Astro.params;
+const brief: Brief = await client.fetch(BRIEF_QUERY, { slug });
+const category = brief.sector?.name || brief.market?.name || '';
+const bodyHTML = toHTMLBody(brief.body);
 ---
 
-<PageLayout title="Brief">
+<PageLayout title={brief.title}>
   <article class="article-page section-padding">
     <div class="container" style="max-width: var(--container-narrow);">
       <div class="article-meta">
-        <span class="article-category">Office</span>
-        <time>July 10, 2026</time>
+        <span class="article-category">{category}</span>
+        <time>{new Date(brief.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
       </div>
-      <h1 class="article-title">Airbnb Buys Manhattan Office Despite NYC Rental Crackdown</h1>
+      <h1 class="article-title">{brief.title}</h1>
       <div class="article-share">
         <span>Share:</span>
         <a href="#" aria-label="Copy link">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM12 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/><path d="M6.5 9.5l3 1M9.5 5.5l-3 1"/></svg>
         </a>
       </div>
-      <div class="article-hero-image">
-        <div class="article-hero-placeholder"></div>
-      </div>
-      <div class="article-body">
-        <p>Airbnb's $81.5M acquisition of a landmark NYC office signals a long-term presence in a city with strict short-term rental laws. The company purchased a 12-story building in Manhattan's Flatiron District, marking one of the largest office acquisitions by a tech company in the city this year.</p>
-        <p>The move comes despite ongoing regulatory challenges facing short-term rentals in New York City, where strict registration requirements and occupancy limits have significantly reduced the available inventory.</p>
-        <p>"This investment demonstrates our commitment to New York and our confidence in the future of the city," said an Airbnb spokesperson.</p>
-      </div>
+      {brief.image && (
+        <div class="article-hero-image">
+          <img src={urlFor(brief.image).width(800).url()} alt={brief.title} style="width:100%;border-radius:1rem;margin-bottom:2rem;" />
+        </div>
+      )}
+      {!brief.image && (
+        <div class="article-hero-image">
+          <div class="article-hero-placeholder"></div>
+        </div>
+      )}
+      <div class="article-body" set:html={bodyHTML}></div>
     </div>
   </article>
 </PageLayout>

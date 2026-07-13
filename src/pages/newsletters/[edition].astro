@@ -1,11 +1,14 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import NewsletterCard from '../../components/cards/NewsletterCard.astro';
+import { client, NEWSLETTERS_BY_EDITION_QUERY } from '../../lib/sanity';
+import type { Newsletter } from '../../lib/sanity';
 export async function getStaticPaths() {
   return ['national', 'texas', 'new-york'].map(edition => ({ params: { edition } }));
 }
 const { edition } = Astro.params;
 const editionName = edition ? edition.charAt(0).toUpperCase() + edition.slice(1).replace('-', ' ') : '';
+const issues: Newsletter[] = await client.fetch(NEWSLETTERS_BY_EDITION_QUERY, { edition });
 ---
 
 <PageLayout title={`${editionName} Newsletter`}>
@@ -13,7 +16,7 @@ const editionName = edition ? edition.charAt(0).toUpperCase() + edition.slice(1)
     <div class="container">
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 2rem;">{editionName} Newsletter</h1>
       <div class="newsletter-list">
-        <!-- Issues for this edition would render here -->
+        {issues.map(n => <NewsletterCard title={n.title} slug={n.slug.current} edition={n.edition} date={n.issueDate} />)}
       </div>
     </div>
   </section>

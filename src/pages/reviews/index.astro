@@ -1,17 +1,10 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ReviewCard from '../../components/cards/ReviewCard.astro';
+import { client, REVIEWS_QUERY } from '../../lib/sanity';
+import type { Review } from '../../lib/sanity';
 
-const reviews = [
-  { title: 'Crexi Review: Is It the Best Platform for CRE Listing & Investment?', slug: 'crexi-review', productName: 'Crexi', rating: 4, author: 'Brick Wire', date: 'July 2026' },
-  { title: 'Reonomy Review: Commercial Real Estate Data & Analytics', slug: 'reonomy-review', productName: 'Reonomy', rating: 4, author: 'Brick Wire', date: 'July 2026' },
-  { title: 'Dealpath Review: CRE Investment Management Software', slug: 'dealpath-review', productName: 'Dealpath', rating: 5, author: 'Brick Wire', date: 'June 2026' },
-  { title: 'CoStar Suite Review: The Industry Standard?', slug: 'costar-suite-review', productName: 'CoStar', rating: 4, author: 'Brick Wire', date: 'June 2026' },
-  { title: 'VTS Review: Lease Management & Marketing for CRE', slug: 'vts-review', productName: 'VTS', rating: 4, author: 'Brick Wire', date: 'June 2026' },
-  { title: 'Buildout Review: CRM & Marketing for CRE Brokers', slug: 'buildout-review', productName: 'Buildout', rating: 3, author: 'Brick Wire', date: 'May 2026' },
-  { title: 'Apto Review: Commercial Real Estate CRM Platform', slug: 'apto-review', productName: 'Apto', rating: 4, author: 'Brick Wire', date: 'May 2026' },
-  { title: 'LoopNet Review: Is It Worth Listing Your Property?', slug: 'loopnet-review', productName: 'LoopNet', rating: 3, author: 'Brick Wire', date: 'May 2026' },
-];
+const reviews: Review[] = await client.fetch(REVIEWS_QUERY);
 ---
 
 <PageLayout title="Product Reviews" description="In-depth reviews of the leading commercial real estate software platforms and services.">
@@ -20,7 +13,7 @@ const reviews = [
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Reviews</h1>
       <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Honest, in-depth reviews of the leading CRE software platforms and services.</p>
       <div class="reviews-grid">
-        {reviews.map(r => <ReviewCard {...r} />)}
+        {reviews.map(r => <ReviewCard title={r.title} slug={r.slug.current} productName={r.productName} rating={r.rating} author={r.author} date={r.date} />)}
       </div>
     </div>
   </section>

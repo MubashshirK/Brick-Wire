@@ -1,46 +1,48 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
+import { client, REVIEWS_QUERY, REVIEW_QUERY, urlFor, toHTMLBody } from '../../lib/sanity';
+import type { Review } from '../../lib/sanity';
 export async function getStaticPaths() {
-  return [
-    { params: { slug: 'crexi-review' } },
-    { params: { slug: 'costar-suite-review' } },
-  ];
+  const reviews: Review[] = await client.fetch(REVIEWS_QUERY);
+  return reviews.map(r => ({ params: { slug: r.slug.current } }));
 }
 const { slug } = Astro.params;
+const review: Review = await client.fetch(REVIEW_QUERY, { slug });
+const bodyHTML = toHTMLBody(review.body);
 ---
 
-<PageLayout title="Review">
+<PageLayout title={review.title}>
   <article class="review-page section-padding">
     <div class="container" style="max-width: var(--container-narrow);">
       <div class="review-stars-large">
         {[...Array(5)].map((_, i) => (
-          <svg width="20" height="20" viewBox="0 0 14 14" fill={i < 4 ? 'var(--color-accent)' : 'var(--color-border)'}>
+          <svg width="20" height="20" viewBox="0 0 14 14" fill={i < review.rating ? 'var(--color-accent)' : 'var(--color-border)'}>
             <path d="M7 0l1.96 4.46 4.79.56-3.5 3.39.87 4.99L7 10.5l-4.12 2.9.87-4.99-3.5-3.39 4.79-.56L7 0z"/>
           </svg>
         ))}
       </div>
-      <h1 class="review-title">Crexi Review: Is It the Best Platform for CRE Listing & Investment?</h1>
-      <div class="review-meta">By Brick Wire &middot; July 2026</div>
+      <h1 class="review-title">{review.title}</h1>
+      <div class="review-meta">By {review.author} &middot; {review.date}</div>
       <div class="review-hero">
-        <div class="review-hero-placeholder"></div>
+        {review.image ? (
+          <img src={urlFor(review.image).width(800).url()} alt={review.productName} style="width:100%;border-radius:1rem;margin-bottom:2rem;" />
+        ) : (
+          <div class="review-hero-placeholder"></div>
+        )}
       </div>
-      <div class="review-body">
-        <p>Crexi has emerged as one of the leading commercial real estate listing and investment platforms, challenging the dominance of traditional players like CoStar and LoopNet.</p>
-        <p>With a focus on technology-driven features and user experience, Crexi has attracted a growing user base of brokers, investors, and property owners.</p>
-        <h2>Overview</h2>
-        <p>Crexi is an online marketplace for commercial real estate that allows users to list, discover, and transact properties. The platform combines traditional listing functionality with data analytics, marketing tools, and deal management features.</p>
-        <h2>Pros</h2>
-        <ul>
-          <li>Modern, intuitive user interface</li>
-          <li>Strong data and analytics capabilities</li>
-          <li>Integration with marketing tools</li>
-        </ul>
-        <h2>Cons</h2>
-        <ul>
-          <li>Smaller inventory than incumbents</li>
-          <li>Premium pricing for advanced features</li>
-        </ul>
-      </div>
+      <div class="review-body" set:html={bodyHTML}></div>
+      {review.pros && review.pros.length > 0 && (
+        <>
+          <h2>Pros</h2>
+          <ul>{review.pros.map(p => <li>{p}</li>)}</ul>
+        </>
+      )}
+      {review.cons && review.cons.length > 0 && (
+        <>
+          <h2>Cons</h2>
+          <ul>{review.cons.map(c => <li>{c}</li>)}</ul>
+        </>
+      )}
     </div>
   </article>
 </PageLayout>

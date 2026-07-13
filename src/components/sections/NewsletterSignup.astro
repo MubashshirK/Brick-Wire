@@ -1,15 +1,15 @@
 ---
 import TextSlider from '../blocks/TextSlider.astro';
 import { NEWSLETTER_WORDS, SITE } from '../../lib/constants';
+import { client, NEWSLETTERS_QUERY } from '../../lib/sanity';
+import type { Newsletter } from '../../lib/sanity';
 
-const issues = [
-  { title: 'Construction Costs Climb as Labor Shortages and Trade Policy Tighten the Market', edition: 'National', date: 'July 10, 2026' },
-  { title: 'NYC Office-to-Apartment Conversion Halted After Structural Scare', edition: 'New York', date: 'July 9, 2026' },
-  { title: 'Why Rate Cuts May Not Be the CRE Catalyst Investors Expect', edition: 'National', date: 'July 9, 2026' },
-  { title: 'Texas Multifamily Growth Meets Affordability Pressure', edition: 'Texas', date: 'July 8, 2026' },
-  { title: 'Industrial Leasing Surges as Occupiers Lock In Long-Term Deals', edition: 'National', date: 'July 8, 2026' },
-  { title: 'NYC Apartment Market Defies Headwinds', edition: 'New York', date: 'July 7, 2026' },
-];
+const newsletters: Newsletter[] = await client.fetch(NEWSLETTERS_QUERY);
+const issues = newsletters.slice(0, 6).map(n => ({
+  title: n.title,
+  edition: n.edition.charAt(0).toUpperCase() + n.edition.slice(1).replace('-', ' '),
+  date: new Date(n.issueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+}));
 ---
 
 <section class="newsletter-signup-section section-dark section-padding">

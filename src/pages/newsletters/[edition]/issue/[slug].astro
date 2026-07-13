@@ -1,34 +1,29 @@
 ---
 import PageLayout from '../../../../layouts/PageLayout.astro';
+import { client, NEWSLETTERS_QUERY, NEWSLETTER_QUERY, toHTMLBody } from '../../../../lib/sanity';
+import type { Newsletter } from '../../../../lib/sanity';
 export async function getStaticPaths() {
-  return [
-    { params: { edition: 'national', slug: 'construction-costs-climb' } },
-    { params: { edition: 'new-york', slug: 'nyc-conversion-halted' } },
-  ];
+  const newsletters: Newsletter[] = await client.fetch(NEWSLETTERS_QUERY);
+  return newsletters.map(n => ({ params: { edition: n.edition, slug: n.slug.current } }));
 }
 const { edition, slug } = Astro.params;
+const issue: Newsletter = await client.fetch(NEWSLETTER_QUERY, { slug });
+const editionName = issue.edition.charAt(0).toUpperCase() + issue.edition.slice(1).replace('-', ' ');
+const bodyHTML = toHTMLBody(issue.body);
+const issueDate = new Date(issue.issueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 ---
 
-<PageLayout title="Newsletter Issue">
+<PageLayout title={issue.title}>
   <article class="issue-page section-padding">
     <div class="container" style="max-width: var(--container-narrow);">
       <div class="issue-meta">
-        <span class="issue-edition">{edition?.charAt(0).toUpperCase()}{edition?.slice(1)} Edition</span>
-        <time>July 10, 2026</time>
+        <span class="issue-edition">{editionName} Edition</span>
+        <time>{issueDate}</time>
       </div>
-      <h1 class="issue-title">Construction Costs Climb as Labor Shortages and Trade Policy Tighten the Market</h1>
-      <div class="issue-body">
-        <p>JLL says rising labor shortages, tariffs and data center demand are pushing construction costs higher across the United States. The firm's latest report indicates that construction costs have increased by 7.2% year-over-year, driven by a combination of factors including tight labor markets, trade policy uncertainty, and unprecedented demand from data center development.</p>
-        <p>"We're seeing a perfect storm of cost pressures that shows no signs of abating," said a JLL analyst. "Labor shortages alone are adding 3-4% to project costs as developers compete for a limited pool of skilled workers."</p>
-        <h2>Key Takeaways</h2>
-        <ul>
-          <li>Construction costs up 7.2% YoY</li>
-          <li>Data center demand driving material prices</li>
-          <li>Tariff policy creating uncertainty in supply chains</li>
-        </ul>
-      </div>
+      <h1 class="issue-title">{issue.title}</h1>
+      <div class="issue-body" set:html={bodyHTML}></div>
       <div class="issue-footer">
-        <p>Thank you for reading the {edition} edition of the Brick Wire newsletter.</p>
+        <p>Thank you for reading the {issue.edition} edition of the Brick Wire newsletter.</p>
       </div>
     </div>
   </article>

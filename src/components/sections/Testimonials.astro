@@ -1,5 +1,7 @@
 ---
-import { TESTIMONIALS } from "../../lib/constants";
+import { client, TESTIMONIALS_QUERY } from "../../lib/sanity";
+import type { Testimonial } from "../../lib/sanity";
+const testimonialsData: Testimonial[] = await client.fetch(TESTIMONIALS_QUERY);
 ---
 
 <section class="testimonials-section section-padding">
@@ -56,12 +58,12 @@ import { TESTIMONIALS } from "../../lib/constants";
         <div class="testimonials-carousel" id="testimonials-carousel">
           <div class="testimonials-carousel-track">
             {
-              [...TESTIMONIALS, ...TESTIMONIALS].map((t) => (
+              [...testimonialsData, ...testimonialsData].map((t) => (
                 <div class="testimonial-card">
-                  <p class="testimonial-text">&ldquo;{t.text}&rdquo;</p>
+                  <p class="testimonial-text">&ldquo;{t.quote}&rdquo;</p>
                   <div class="testimonial-author">
                     <strong class="testimonial-name">{t.name}</strong>
-                    <span class="testimonial-title">{t.title}</span>
+                    <span class="testimonial-title">{t.company ? `${t.title} · ${t.company}` : t.title}</span>
                   </div>
                 </div>
               ))
