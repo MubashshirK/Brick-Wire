@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from '@react-email/ui';
 import { Text, Img, Section } from '@react-email/components';
 
 interface Props {
@@ -15,7 +14,7 @@ export function EmailHeader({ previewText, baseUrl: propBaseUrl }: Props) {
       {previewText && (
         <Text style={preview}>{previewText}</Text>
       )}
-      <View style={logoRow}>
+      <div style={logoRow}>
         <Img
           src={`${baseUrl}/images/brick-wire-logo.png`}
           alt="Brick Wire"
@@ -24,7 +23,7 @@ export function EmailHeader({ previewText, baseUrl: propBaseUrl }: Props) {
           style={logo}
         />
         <Text style={brandName}>Brick Wire<sup style={reg}>&reg;</sup></Text>
-      </View>
+      </div>
       <Text style={tagline}>Your daily edge in real estate</Text>
     </Section>
   );

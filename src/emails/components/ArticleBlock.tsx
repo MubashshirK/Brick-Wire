@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from '@react-email/ui';
 import { Text, Link } from '@react-email/components';
 
 interface Props {
@@ -15,14 +14,14 @@ export function ArticleBlock({ title, excerpt, slug, category, sponsored, baseUr
   const baseUrl = propBaseUrl || process.env.SITE_URL || 'https://brickwire.com';
 
   return (
-    <View style={article}>
+    <div style={article}>
       {sponsored && <Text style={sponsoredBadge}>Sponsored</Text>}
       {category && <Text style={categoryLabel}>{category}</Text>}
       <Link href={`${baseUrl}/briefs/${slug}/`} style={titleStyle}>
         {title}
       </Link>
       <Text style={excerptStyle}>{excerpt}</Text>
-    </View>
+    </div>
   );
 }
 

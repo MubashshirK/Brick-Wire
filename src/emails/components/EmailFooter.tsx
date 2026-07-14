@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from '@react-email/ui';
 import { Text, Link, Hr } from '@react-email/components';
 
 interface Props {
@@ -11,20 +10,20 @@ export function EmailFooter({ unsubscribeUrl, baseUrl: propBaseUrl }: Props) {
   const baseUrl = propBaseUrl || process.env.SITE_URL || 'https://brickwire.com';
 
   return (
-    <View style={footer}>
+    <div style={footer}>
       <Hr style={hr} />
       <Text style={address}>
         Brick Wire LLC<br />
         123 Market Street, Suite 400<br />
         New York, NY 10001
       </Text>
-      <View style={links}>
+      <div style={links}>
         <Link href={`${baseUrl}/about-us/`} style={link}>About</Link>
         <Link href={`${baseUrl}/advertise/`} style={link}>Advertise</Link>
         <Link href={`${baseUrl}/privacy-policy/`} style={link}>Privacy</Link>
         <Link href={`${baseUrl}/terms-of-use/`} style={link}>Terms</Link>
         <Link href={`${baseUrl}/contact-us/`} style={link}>Contact</Link>
-      </View>
+      </div>
       {unsubscribeUrl && (
         <Text style={unsubscribe}>
           <Link href={unsubscribeUrl} style={unsubscribeLinkStyle}>Unsubscribe</Link>
@@ -34,7 +33,7 @@ export function EmailFooter({ unsubscribeUrl, baseUrl: propBaseUrl }: Props) {
       <Text style={copyright}>
         &copy; {new Date().getFullYear()} Brick Wire. All rights reserved.
       </Text>
-    </View>
+    </div>
   );
 }
 
