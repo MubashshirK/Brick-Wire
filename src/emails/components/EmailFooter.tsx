@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Link, Hr } from '@react-email/components';
+import { View } from '@react-email/ui';
+import { Text, Link, Hr } from '@react-email/components';
 
 interface Props {
   unsubscribeUrl?: string;

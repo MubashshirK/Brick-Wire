@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Img, Section } from '@react-email/components';
+import { View } from '@react-email/ui';
+import { Text, Img, Section } from '@react-email/components';
 
 interface Props {
   previewText?: string;

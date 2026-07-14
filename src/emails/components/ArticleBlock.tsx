@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Link } from '@react-email/components';
+import { View } from '@react-email/ui';
+import { Text, Link } from '@react-email/components';
 
 interface Props {
   title: string;
