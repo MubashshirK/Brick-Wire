@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function EmailFooter({ unsubscribeUrl, baseUrl: propBaseUrl }: Props) {
-  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+  const baseUrl = propBaseUrl || process.env.SITE_URL || 'https://brickwire.com';
 
   return (
     <View style={footer}>

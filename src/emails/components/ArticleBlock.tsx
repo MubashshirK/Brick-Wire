@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function ArticleBlock({ title, excerpt, slug, category, sponsored, baseUrl: propBaseUrl }: Props) {
-  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+  const baseUrl = propBaseUrl || process.env.SITE_URL || 'https://brickwire.com';
 
   return (
     <View style={article}>

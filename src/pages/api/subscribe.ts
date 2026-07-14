@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     if (subscriber) {
-      const baseUrl = import.meta.env.BASE_URL || 'https://brickwire.com';
+      const baseUrl = import.meta.env.SITE_URL || 'https://brickwire.com';
       const html = render(
         React.createElement(Welcome, {
           firstName: firstName || 'there',

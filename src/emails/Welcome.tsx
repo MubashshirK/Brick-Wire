@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Welcome({ firstName = 'there', unsubscribeToken, baseUrl: propBaseUrl }: Props) {
-  const baseUrl = propBaseUrl || process.env.BASE_URL || 'https://brickwire.com';
+  const baseUrl = propBaseUrl || process.env.SITE_URL || 'https://brickwire.com';
   const unsubscribeUrl = unsubscribeToken ? `${baseUrl}/api/unsubscribe?token=${unsubscribeToken}` : undefined;
 
   return (

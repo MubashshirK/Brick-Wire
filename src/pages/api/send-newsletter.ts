@@ -69,7 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Failed to create send record' }), { status: 500 });
     }
 
-    const baseUrl = import.meta.env.BASE_URL || 'https://brickwire.com';
+    const baseUrl = import.meta.env.SITE_URL || 'https://brickwire.com';
     const today = new Date().toLocaleDateString('en-US', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     });

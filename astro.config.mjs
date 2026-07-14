@@ -2,12 +2,12 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://brickwire.com',
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  adapter: vercel(),
   integrations: [
     sanity({
       projectId: process.env.SANITY_PROJECT_ID || 'placeholder',
