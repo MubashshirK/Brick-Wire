@@ -20,13 +20,14 @@ const editions: Newsletter[] = await client.fetch(NEWSLETTERS_QUERY);
       </div>
 
       <div class="newsletter-list">
-        {editions.map(n => <NewsletterCard title={n.title} slug={n.slug.current} edition={n.edition} date={n.issueDate} />)}
+        {editions.map(n => <NewsletterCard title={n.title} slug={n.slug.current} edition={n.edition} date={n.issueDate} image={n.image} />)}
       </div>
     </div>
   </section>
 </PageLayout>
 
 <style>
+  .newsletters-page { padding-top: calc(var(--header-height) + 2rem); }
   .edition-tabs {
     display: flex;
     gap: 0.5rem;

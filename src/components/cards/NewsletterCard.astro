@@ -1,18 +1,24 @@
 ---
+import { urlFor } from '../../lib/sanity';
+import type { SanityImage } from '../../lib/sanity';
 interface Props {
   title: string;
   slug: string;
   edition: string;
   date: string;
   excerpt?: string;
+  image?: SanityImage;
 }
-const { title, slug, edition, date, excerpt } = Astro.props;
+const { title, slug, edition, date, excerpt, image } = Astro.props;
 ---
 
 <article class="newsletter-card">
   <a href={`/newsletters/${edition}/issue/${slug}/`} class="newsletter-card-link">
     <div class="newsletter-card-image">
-      <div class="newsletter-card-placeholder"></div>
+      {image
+        ? <img src={urlFor(image).width(400).url()} alt={title} class="newsletter-card-img" />
+        : <div class="newsletter-card-placeholder"></div>
+      }
     </div>
     <div class="newsletter-card-body">
       <span class="newsletter-edition">{edition}</span>
@@ -43,6 +49,17 @@ const { title, slug, edition, date, excerpt } = Astro.props;
     padding-bottom: 52%;
     background: var(--color-bg-subtle);
     border-radius: 0.5rem;
+  }
+  .newsletter-card-image {
+    position: relative;
+    overflow: hidden;
+  }
+  .newsletter-card-img {
+    width: 100%;
+    aspect-ratio: 1.92 / 1;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    display: block;
   }
   .newsletter-card-body {
     display: flex;

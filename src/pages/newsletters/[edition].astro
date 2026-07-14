@@ -12,12 +12,16 @@ const issues: Newsletter[] = await client.fetch(NEWSLETTERS_BY_EDITION_QUERY, { 
 ---
 
 <PageLayout title={`${editionName} Newsletter`}>
-  <section class="section-padding">
+  <section class="edition-page section-padding">
     <div class="container">
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 2rem;">{editionName} Newsletter</h1>
       <div class="newsletter-list">
-        {issues.map(n => <NewsletterCard title={n.title} slug={n.slug.current} edition={n.edition} date={n.issueDate} />)}
+        {issues.map(n => <NewsletterCard title={n.title} slug={n.slug.current} edition={n.edition} date={n.issueDate} image={n.image} />)}
       </div>
     </div>
   </section>
 </PageLayout>
+
+<style>
+  .edition-page { padding-top: calc(var(--header-height) + 2rem); }
+</style>

@@ -1,27 +1,35 @@
-<div class="popup-overlay" id="popup-overlay">
+<div class="popup-overlay" id="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-describedby="popup-desc" inert>
   <div class="popup-modal">
-    <button class="popup-close" id="popup-close" aria-label="Close popup">
+    <button class="popup-close" id="popup-close" aria-label="Close popup" type="button">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
-    <div class="popup-content">
+    <div class="popup-content" id="popup-content-form">
       <div class="popup-image">
-        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-          <rect width="80" height="80" rx="12" fill="var(--color-accent)"/>
-          <text x="40" y="45" text-anchor="middle" font-size="18" font-weight="700" fill="white">BW</text>
-        </svg>
+        <img src="/images/brick-wire-logo.png" alt="Brick Wire" class="popup-logo" />
       </div>
-      <h3 class="popup-title">Start your day with Brick Wire</h3>
-      <p class="popup-desc">Join <strong>65k+ subscribers</strong> and get smarter about what matters in real estate in 5 minutes or less.</p>
-      <form class="popup-form" action="/api/subscribe" method="POST">
+      <h3 class="popup-title" id="popup-title">Start your day with Brick Wire</h3>
+      <p class="popup-desc" id="popup-desc">Join <strong>65k+ subscribers</strong> and get smarter about what matters in real estate in 5 minutes or less.</p>
+      <form class="popup-form" id="popup-form">
         <input type="hidden" name="form_location" value="popup" />
         <input type="hidden" name="publication" value="Brick Wire" />
         <label for="popup-email" class="sr-only">Email address</label>
-        <input id="popup-email" name="email" type="email" placeholder="Enter your email" required />
+        <input id="popup-email" name="email" type="email" placeholder="Enter your email" required autocomplete="email" />
         <button type="submit" class="btn btn-primary popup-submit">SUBSCRIBE</button>
       </form>
       <p class="popup-privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+    <div class="popup-success" id="popup-success" hidden>
+      <div class="popup-image">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <rect width="80" height="80" rx="40" fill="var(--color-accent)"/>
+          <path d="M24 40l10 10 22-22" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <h3 class="popup-title">You're subscribed!</h3>
+      <p class="popup-desc">Check your inbox for a welcome email.</p>
+      <button class="btn btn-primary popup-close-success" id="popup-close-success" type="button">Got it</button>
     </div>
   </div>
 </div>
@@ -29,29 +37,95 @@
 <script>
   (function() {
     const KEY = 'brickwire_popup';
-    const dismissed = localStorage.getItem(KEY);
-    if (dismissed && Date.now() < parseInt(dismissed)) return;
+    try { if (sessionStorage.getItem(KEY)) return; } catch (_e) {}
 
-    const overlay = document.getElementById('popup-overlay');
+    const el = document.getElementById('popup-overlay');
     const closeBtn = document.getElementById('popup-close');
+    const form = document.getElementById('popup-form');
+    if (!el || !closeBtn || !form) return;
 
-    setTimeout(() => {
-      overlay.classList.add('is-visible');
-    }, 10000);
+    const closeSuccessBtn = document.getElementById('popup-close-success');
+    const formContent = document.getElementById('popup-content-form');
+    const successContent = document.getElementById('popup-success');
+    const emailInput = document.getElementById('popup-email') as HTMLInputElement | null;
 
-    function close() {
-      overlay.classList.remove('is-visible');
-      localStorage.setItem(KEY, String(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    function lockScroll(lock: boolean): void {
+      document.body.style.overflow = lock ? 'hidden' : '';
     }
 
+    function getFocusable(): NodeListOf<HTMLElement> {
+      return el.querySelectorAll<HTMLElement>('button, input, [tabindex]:not([tabindex="-1"])');
+    }
+
+    function trapFocus(e: KeyboardEvent): void {
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function show(): void {
+      el.classList.add('is-visible');
+      el.removeAttribute('inert');
+      lockScroll(true);
+      if (emailInput) emailInput.focus();
+      document.addEventListener('keydown', onKeydown);
+    }
+
+    function close(): void {
+      el.classList.remove('is-visible');
+      el.setAttribute('inert', '');
+      lockScroll(false);
+      document.removeEventListener('keydown', onKeydown);
+      try { sessionStorage.setItem(KEY, '1'); } catch (_e) {}
+    }
+
+    function onKeydown(e: KeyboardEvent): void {
+      if (e.key === 'Escape') close();
+      if (e.key === 'Tab') trapFocus(e);
+    }
+
+    setTimeout(show, 10000);
+
     closeBtn.addEventListener('click', close);
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) close();
+    if (closeSuccessBtn) closeSuccessBtn.addEventListener('click', close);
+    el.addEventListener('click', function(e: MouseEvent): void {
+      if (e.target === el) close();
     });
 
-    const form = overlay.querySelector('form');
-    form.addEventListener('submit', function(e) {
-      localStorage.setItem(KEY, String(Date.now() + 365 * 24 * 60 * 60 * 1000));
+    form.addEventListener('submit', async function(e: SubmitEvent): Promise<void> {
+      e.preventDefault();
+      const submitBtn: HTMLElement | null = form.querySelector('.popup-submit');
+      if (submitBtn) (submitBtn as HTMLButtonElement).disabled = true;
+
+      try {
+        const fd = new FormData(form);
+        const resp = await fetch('/api/subscribe', { method: 'POST', body: fd });
+        if (resp.redirected || resp.ok) {
+          if (formContent) formContent.hidden = true;
+          if (successContent) successContent.hidden = false;
+          try { sessionStorage.setItem(KEY, '1'); } catch (_e) {}
+        } else {
+          throw new Error('Subscription failed');
+        }
+      } catch (_err: unknown) {
+        if (emailInput) {
+          emailInput.value = '';
+          emailInput.focus();
+        }
+        if (submitBtn) (submitBtn as HTMLButtonElement).disabled = false;
+      }
     });
   })();
 </script>
@@ -67,11 +141,14 @@
     z-index: 200;
     opacity: 0;
     visibility: hidden;
-    transition: all var(--transition-base);
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
   .popup-overlay.is-visible {
     opacity: 1;
     visibility: visible;
+  }
+  .popup-overlay[inert] {
+    pointer-events: none;
   }
   .popup-modal {
     background: var(--color-bg-white);
@@ -81,6 +158,11 @@
     position: relative;
     padding: 2.5rem 2rem;
     box-shadow: var(--shadow-lg);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .is-visible .popup-modal {
+    transform: scale(1);
   }
   .popup-close {
     position: absolute;
@@ -106,6 +188,10 @@
   .popup-image svg {
     width: 72px;
     height: 72px;
+  }
+  .popup-logo {
+    height: 48px;
+    width: auto;
   }
   .popup-title {
     font-family: var(--font-heading);
@@ -146,5 +232,18 @@
     font-size: 0.75rem;
     color: var(--color-text-muted);
     margin: 0;
+  }
+  .popup-success {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .popup-success[hidden] {
+    display: none;
+  }
+  .popup-close-success {
+    width: 100%;
   }
 </style>

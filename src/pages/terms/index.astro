@@ -1,0 +1,261 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { client, TERMS_QUERY, toHTMLBody } from '../../lib/sanity';
+import type { Term } from '../../lib/sanity';
+
+const terms: Term[] = await client.fetch(TERMS_QUERY);
+
+const categories = [...new Set(terms.map(t => t.category).filter(Boolean) as string[])];
+const letters = [...new Set(terms.map(t => t.name.charAt(0).toUpperCase()))].sort();
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const grouped: Record<string, Term[]> = {};
+for (const term of terms) {
+  const letter = term.name.charAt(0).toUpperCase();
+  if (!grouped[letter]) grouped[letter] = [];
+  grouped[letter].push(term);
+}
+for (const letter of Object.keys(grouped)) {
+  grouped[letter].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+}
+---
+
+<PageLayout title="CRE Terms Glossary" description="A comprehensive glossary of commercial real estate terms, definitions, and abbreviations.">
+  <section class="glossary-page section-padding">
+    <div class="container">
+      <div class="glossary-header">
+        <h1>CRE Terms Glossary</h1>
+        <p class="glossary-subtitle">A comprehensive reference of commercial real estate terms, definitions, and abbreviations used across the industry.</p>
+      </div>
+
+      <div class="glossary-toolbar">
+        <div class="glossary-search">
+          <svg class="glossary-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input type="text" id="glossarySearch" class="glossary-search-input" placeholder="Search terms..." autocomplete="off" />
+        </div>
+        {categories.length > 0 && (
+          <div class="glossary-categories">
+            <button class="category-pill category-pill--active" data-category="all">All</button>
+            {categories.map(cat => (
+              <button class="category-pill" data-category={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}</button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <nav class="glossary-nav" id="glossaryNav">
+        {alphabet.map(letter => {
+          const hasTerms = !!grouped[letter];
+          return (
+            <a
+              href={hasTerms ? `#letter-${letter.toLowerCase()}` : undefined}
+              class={`glossary-nav-link${hasTerms ? '' : ' glossary-nav-link--empty'}`}
+              data-letter={letter.toLowerCase()}
+            >{letter}</a>
+          );
+        })}
+      </nav>
+
+      <div class="glossary-results" id="glossaryResults">
+        {Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b)).map(([letter, letterTerms]) => (
+          <div class="glossary-letter-group" data-letter={letter.toLowerCase()} id={`letter-${letter.toLowerCase()}`}>
+            <div class="glossary-letter-header">
+              <h2 class="glossary-letter">{letter}</h2>
+              <span class="glossary-letter-count">{letterTerms.length} term{letterTerms.length !== 1 ? 's' : ''}</span>
+            </div>
+            <div class="glossary-terms">
+              {letterTerms.map(term => {
+                const defHTML = toHTMLBody(term.definition);
+                return (
+                  <details class="glossary-term-card" data-name={term.name.toLowerCase()} data-category={term.category || ''}>
+                    <summary class="glossary-term-summary">
+                      <span class="glossary-term-name">
+                        {term.abbreviation && <span class="glossary-term-abbr">{term.abbreviation}</span>}
+                        {term.name}
+                      </span>
+                      <div class="glossary-term-meta">
+                        {term.category && <span class="glossary-term-category">{term.category.replace('-', ' ')}</span>}
+                        <svg class="glossary-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                      </div>
+                    </summary>
+                    <div class="glossary-term-definition" set:html={defHTML}></div>
+                  </details>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {terms.length === 0 && (
+        <div class="glossary-empty">
+          <p>No terms found. Terms will appear here once added through the CMS.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  const searchInput = document.getElementById('glossarySearch') as HTMLInputElement;
+  const termCards = document.querySelectorAll('.glossary-term-card');
+  const letterGroups = document.querySelectorAll('.glossary-letter-group');
+  const categoryPills = document.querySelectorAll('.category-pill');
+  const navLinks = document.querySelectorAll('.glossary-nav-link');
+  let activeCategory = 'all';
+
+  function filterTerms() {
+    const query = searchInput.value.trim().toLowerCase();
+
+    termCards.forEach(card => {
+      const name = card.getAttribute('data-name') || '';
+      const category = card.getAttribute('data-category') || '';
+      const matchesSearch = !query || name.includes(query);
+      const matchesCategory = activeCategory === 'all' || category === activeCategory;
+      card.style.display = matchesSearch && matchesCategory ? '' : 'none';
+    });
+
+    letterGroups.forEach(group => {
+      const visible = Array.from(group.querySelectorAll('.glossary-term-card')).some(
+        card => card.style.display !== 'none'
+      );
+      group.style.display = visible ? '' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', filterTerms);
+
+  categoryPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      categoryPills.forEach(p => p.classList.remove('category-pill--active'));
+      pill.classList.add('category-pill--active');
+      activeCategory = pill.getAttribute('data-category') || 'all';
+      filterTerms();
+    });
+  });
+
+  const navEl = document.getElementById('glossaryNav');
+  if (navEl) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const letter = entry.target.getAttribute('data-letter');
+          navLinks.forEach(link => {
+            link.classList.toggle('glossary-nav-link--current', link.getAttribute('data-letter') === letter);
+          });
+        }
+      });
+    }, { rootMargin: '-100px 0px -60% 0px' });
+
+    letterGroups.forEach(group => observer.observe(group));
+  }
+</script>
+
+<style>
+  .glossary-page { padding-top: calc(var(--header-height) + 2rem); }
+  .glossary-header { margin-bottom: 2rem; }
+  .glossary-header h1 { font-family: var(--font-heading); font-size: var(--fs-heading-1); margin-bottom: 0.75rem; }
+  .glossary-subtitle { font-size: 1.125rem; color: var(--color-text-muted); max-width: 36rem; line-height: 1.6; }
+
+  .glossary-toolbar { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+  .glossary-search {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; border: 2px solid var(--color-border);
+    border-radius: var(--radius-md); transition: border-color var(--transition-fast);
+    max-width: 400px;
+  }
+  .glossary-search:focus-within { border-color: var(--color-accent); }
+  .glossary-search-icon { color: var(--color-text-muted); flex-shrink: 0; }
+  .glossary-search-input { flex: 1; border: none; outline: none; font-size: 0.9375rem; background: transparent; color: var(--color-text-primary); }
+  .glossary-search-input::placeholder { color: var(--color-text-muted); }
+
+  .glossary-categories { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .category-pill {
+    padding: 0.375rem 1rem; font-size: 0.8125rem; font-weight: 600;
+    border: 1px solid var(--color-border); border-radius: var(--radius-full);
+    background: var(--color-bg-white); color: var(--color-text-body);
+    cursor: pointer; transition: all var(--transition-fast);
+  }
+  .category-pill:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .category-pill--active { background: var(--color-accent); color: var(--color-text-white); border-color: var(--color-accent); }
+  .category-pill--active:hover { background: var(--color-accent-hover); color: var(--color-text-white); }
+
+  .glossary-nav {
+    display: flex; gap: 0.25rem; flex-wrap: wrap;
+    padding: 1rem 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem; position: sticky; top: var(--header-height); z-index: 10;
+    background: var(--color-bg-white);
+  }
+  .glossary-nav-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2rem; height: 2rem;
+    font-size: 0.8125rem; font-weight: 700; text-decoration: none;
+    color: var(--color-text-primary); border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+  .glossary-nav-link:hover { background: var(--color-accent-subtle); color: var(--color-accent); }
+  .glossary-nav-link--empty { color: var(--color-border); pointer-events: none; }
+  .glossary-nav-link--current { background: var(--color-accent); color: var(--color-text-white); }
+  .glossary-nav-link--current:hover { background: var(--color-accent-hover); color: var(--color-text-white); }
+
+  .glossary-letter-group { margin-bottom: 2.5rem; scroll-margin-top: calc(var(--header-height) + 4rem); }
+  .glossary-letter-group:target { scroll-margin-top: calc(var(--header-height) + 4rem); }
+  .glossary-letter-header {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-accent);
+  }
+  .glossary-letter { font-family: var(--font-heading); font-size: 1.75rem; color: var(--color-accent); line-height: 1; }
+  .glossary-letter-count { font-size: 0.8125rem; color: var(--color-text-muted); font-weight: 600; }
+
+  .glossary-terms { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .glossary-term-card {
+    border: 1px solid var(--color-border); border-radius: var(--radius-md);
+    overflow: hidden; transition: border-color var(--transition-fast);
+  }
+  .glossary-term-card[open] { border-color: var(--color-accent); }
+  .glossary-term-summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1rem 1.25rem; cursor: pointer; list-style: none;
+    transition: background var(--transition-fast);
+  }
+  .glossary-term-summary::-webkit-details-marker { display: none; }
+  .glossary-term-summary:hover { background: var(--color-bg-subtle); }
+  .glossary-term-name { font-size: 1rem; font-weight: 600; color: var(--color-text-primary); display: flex; align-items: center; gap: 0.75rem; }
+  .glossary-term-abbr {
+    font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+    background: var(--color-accent-subtle); color: var(--color-accent);
+    padding: 0.125rem 0.5rem; border-radius: var(--radius-sm);
+  }
+  .glossary-term-meta { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+  .glossary-term-category {
+    font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
+    color: var(--color-text-muted); letter-spacing: 0.03em;
+  }
+  .glossary-chevron { color: var(--color-text-muted); transition: transform var(--transition-fast); }
+  .glossary-term-card[open] .glossary-chevron { transform: rotate(180deg); }
+
+  .glossary-term-definition {
+    padding: 0 1.25rem 1.25rem; border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+  }
+  .glossary-term-definition p { font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-body); margin-bottom: 0.75rem; }
+  .glossary-term-definition p:last-child { margin-bottom: 0; }
+  .glossary-term-definition a { color: var(--color-accent); font-weight: 600; }
+  .glossary-term-definition a:hover { text-decoration: underline; }
+  .glossary-term-definition ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  .glossary-term-definition li { font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-body); list-style: disc; }
+
+  .glossary-empty { text-align: center; padding: 3rem; color: var(--color-text-muted); }
+
+  @media (max-width: 48em) {
+    .glossary-nav { gap: 0.125rem; padding: 0.75rem 0; }
+    .glossary-nav-link { width: 1.75rem; height: 1.75rem; font-size: 0.75rem; }
+    .glossary-term-summary { flex-wrap: wrap; gap: 0.5rem; }
+    .glossary-term-meta { width: 100%; justify-content: space-between; }
+  }
+</style>

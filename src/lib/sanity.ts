@@ -137,6 +137,7 @@ export interface Page {
   title: string;
   slug: SanitySlug;
   body: unknown[];
+  image?: SanityImage;
   seoDescription?: string;
 }
 
@@ -150,6 +151,27 @@ export interface Sector {
   _id: string;
   name: string;
   slug: SanitySlug;
+}
+
+export interface Term {
+  _id: string;
+  name: string;
+  slug: SanitySlug;
+  definition: unknown[];
+  category?: string;
+  abbreviation?: string;
+  relatedTerms?: Array<{ _ref: string }>;
+}
+
+export interface Partner {
+  _id: string;
+  name: string;
+  slug: SanitySlug;
+  description?: string;
+  logo?: SanityImage;
+  url?: string;
+  category?: string;
+  featured?: boolean;
 }
 
 export const BRIEFS_QUERY = `*[_type == "brief"] | order(date desc) { ..., market-> { name, slug }, sector-> { name, slug } }`;
@@ -167,3 +189,6 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0]`;
 export const BRIEFS_BY_MARKET_QUERY = `*[_type == "brief" && market->slug.current == $market] | order(date desc) { ..., market-> { name, slug }, sector-> { name, slug } }`;
 export const BRIEFS_BY_SECTOR_QUERY = `*[_type == "brief" && sector->slug.current == $sector] | order(date desc) { ..., market-> { name, slug }, sector-> { name, slug } }`;
 export const MARKET_REPORTS_QUERY = `*[_type == "marketReport"] | order(reportDate desc)`;
+export const TERMS_QUERY = `*[_type == "term"] | order(name asc) { ..., "relatedTerms": relatedTerms[]-> { name, slug } }`;
+export const TERMS_BY_CATEGORY_QUERY = `*[_type == "term" && category == $category] | order(name asc) { ..., "relatedTerms": relatedTerms[]-> { name, slug } }`;
+export const PARTNERS_QUERY = `*[_type == "partner"] | order(featured desc, name asc) { ..., "logo": logo }`;

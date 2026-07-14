@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleCard from '../../components/cards/ArticleCard.astro';
-import { client, BRIEFS_BY_SECTOR_QUERY } from '../../lib/sanity';
+import { client, BRIEFS_BY_SECTOR_QUERY, urlFor } from '../../lib/sanity';
 import type { Brief } from '../../lib/sanity';
 export async function getStaticPaths() {
   const sectors = ['industry-news', 'investments', 'multifamily', 'industrial', 'proptech', 'lending', 'office', 'retail', 'data'];
@@ -13,13 +13,17 @@ const briefs: Brief[] = await client.fetch(BRIEFS_BY_SECTOR_QUERY, { sector });
 ---
 
 <PageLayout title={`${sectorName} Briefs`}>
-  <section class="section-padding">
+  <section class="sector-page section-padding">
     <div class="container">
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 2rem;">{sectorName}</h1>
       <p style="color: var(--color-text-muted); margin-bottom: 2rem;">The latest news and trends in {sectorName}.</p>
       <div class="briefs-list">
-        {briefs.map(b => <ArticleCard title={b.title} slug={b.slug.current} date={b.date} category={b.sector?.name} excerpt={b.excerpt} />)}
+        {briefs.map(b => <ArticleCard title={b.title} slug={b.slug.current} date={b.date} category={b.sector?.name} excerpt={b.excerpt} image={b.image ? urlFor(b.image).width(320).url() : undefined} />)}
       </div>
     </div>
   </section>
 </PageLayout>
+
+<style>
+  .sector-page { padding-top: calc(var(--header-height) + 2rem); }
+</style>

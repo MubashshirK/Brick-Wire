@@ -1,0 +1,207 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { client, PARTNERS_QUERY, urlFor } from '../../lib/sanity';
+import type { Partner } from '../../lib/sanity';
+
+const partners: Partner[] = await client.fetch(PARTNERS_QUERY);
+const featured = partners.filter(p => p.featured);
+const nonFeatured = partners.filter(p => !p.featured);
+const categories = [...new Set(partners.map(p => p.category).filter(Boolean) as string[])];
+---
+
+<PageLayout title="CRE Search Partners" description="Discover trusted tools and platforms for commercial real estate data, listings, investment analysis, and more.">
+  <section class="partners-page section-padding">
+    <div class="container">
+      <div class="partners-header">
+        <h1>CRE Search Partners</h1>
+        <p class="partners-subtitle">Discover trusted data providers, listing platforms, and tools used by CRE professionals to research, analyze, and transact.</p>
+      </div>
+
+      {categories.length > 0 && (
+        <div class="partners-categories">
+          <button class="category-pill category-pill--active" data-category="all">All Partners</button>
+          {categories.map(cat => (
+            <button class="category-pill" data-category={cat}>{cat.replace('-', ' ')}</button>
+          ))}
+        </div>
+      )}
+
+      {featured.length > 0 && (
+        <div class="partners-section">
+          <div class="partners-section-heading">
+            <h2>Featured Partners</h2>
+          </div>
+          <div class="partners-featured-grid">
+            {featured.map(partner => (
+              <div class="partner-card partner-card--featured" data-category={partner.category || ''}>
+                <div class="partner-card-logo-wrap">
+                  {partner.logo ? (
+                    <img src={urlFor(partner.logo).width(200).height(120).url()} alt={partner.name} loading="lazy" class="partner-card-logo" />
+                  ) : (
+                    <div class="partner-card-logo-placeholder">
+                      <span>{partner.name.charAt(0)}</span>
+                    </div>
+                  )}
+                </div>
+                <div class="partner-card-body">
+                  <h3 class="partner-card-name">{partner.name}</h3>
+                  {partner.description && <p class="partner-card-desc">{partner.description}</p>}
+                  {partner.category && <span class="partner-card-tag">{partner.category.replace('-', ' ')}</span>}
+                </div>
+                {partner.url && (
+                  <a href={partner.url} target="_blank" rel="noopener noreferrer" class="partner-card-cta btn btn-primary">Visit Site</a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div class="partners-section">
+        {featured.length > 0 && (
+          <div class="partners-section-heading">
+            <h2>All Partners</h2>
+          </div>
+        )}
+        <div class="partners-grid" id="partnersGrid">
+          {nonFeatured.map(partner => (
+            <div class="partner-card" data-category={partner.category || ''}>
+              <div class="partner-card-logo-wrap">
+                {partner.logo ? (
+                  <img src={urlFor(partner.logo).width(200).height(120).url()} alt={partner.name} loading="lazy" class="partner-card-logo" />
+                ) : (
+                  <div class="partner-card-logo-placeholder">
+                    <span>{partner.name.charAt(0)}</span>
+                  </div>
+                )}
+              </div>
+              <div class="partner-card-body">
+                <h3 class="partner-card-name">{partner.name}</h3>
+                {partner.description && <p class="partner-card-desc">{partner.description}</p>}
+                {partner.category && <span class="partner-card-tag">{partner.category.replace('-', ' ')}</span>}
+              </div>
+              {partner.url && (
+                <a href={partner.url} target="_blank" rel="noopener noreferrer" class="partner-card-cta btn btn-secondary">Visit Site</a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {partners.length === 0 && (
+        <div class="partners-empty">
+          <div class="partners-empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h2>No partners yet</h2>
+          <p>Partner listings will appear here once added through the CMS.</p>
+        </div>
+      )}
+
+      <div class="partners-cta section-light">
+        <div class="partners-cta-content">
+          <h2>Become a Partner</h2>
+          <p>Reach thousands of CRE professionals by listing your platform or service in our partner directory.</p>
+          <a href="mailto:hello@brickwire.com" class="btn btn-primary">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  const categoryPills = document.querySelectorAll('.category-pill');
+  const partnerCards = document.querySelectorAll('.partner-card, .partner-card--featured');
+
+  categoryPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      categoryPills.forEach(p => p.classList.remove('category-pill--active'));
+      pill.classList.add('category-pill--active');
+      const active = pill.getAttribute('data-category') || 'all';
+
+      partnerCards.forEach(card => {
+        const cat = card.getAttribute('data-category') || '';
+        card.style.display = active === 'all' || cat === active ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<style>
+  .partners-page { padding-top: calc(var(--header-height) + 2rem); }
+  .partners-header { margin-bottom: 2rem; }
+  .partners-header h1 { font-family: var(--font-heading); font-size: var(--fs-heading-1); margin-bottom: 0.75rem; }
+  .partners-subtitle { font-size: 1.125rem; color: var(--color-text-muted); max-width: 36rem; line-height: 1.6; }
+
+  .partners-categories { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .category-pill {
+    padding: 0.5rem 1.25rem; font-size: 0.8125rem; font-weight: 600;
+    border: 1px solid var(--color-border); border-radius: var(--radius-full);
+    background: var(--color-bg-white); color: var(--color-text-body);
+    cursor: pointer; transition: all var(--transition-fast);
+  }
+  .category-pill:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .category-pill--active { background: var(--color-accent); color: var(--color-text-white); border-color: var(--color-accent); }
+  .category-pill--active:hover { background: var(--color-accent-hover); color: var(--color-text-white); }
+
+  .partners-section { margin-bottom: 3rem; }
+  .partners-section-heading { margin-bottom: 1.5rem; }
+  .partners-section-heading h2 { font-family: var(--font-heading); font-size: 1.5rem; }
+
+  .partners-featured-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;
+  }
+  .partners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+
+  .partner-card {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    overflow: hidden; transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+    background: var(--color-bg-white);
+  }
+  .partner-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .partner-card--featured { border-color: var(--color-accent); border-width: 2px; }
+
+  .partner-card-logo-wrap {
+    aspect-ratio: 16/9; overflow: hidden;
+    background: var(--color-bg-subtle);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+  }
+  .partner-card-logo { max-width: 70%; max-height: 70%; object-fit: contain; }
+  .partner-card-logo-placeholder {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  }
+  .partner-card-logo-placeholder span { font-size: 2.5rem; font-weight: 800; color: var(--color-accent); opacity: 0.3; font-family: var(--font-heading); }
+
+  .partner-card-body { padding: 1.25rem 1.25rem 0; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+  .partner-card-name { font-family: var(--font-heading); font-size: 1.125rem; font-weight: 700; }
+  .partner-card-desc { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.55; flex: 1; }
+  .partner-card-tag {
+    font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+    color: var(--color-accent); letter-spacing: 0.04em;
+  }
+
+  .partner-card-cta {
+    margin: 1rem 1.25rem 1.25rem;
+    font-size: 0.8125rem; padding: 0.75rem 1.25rem;
+  }
+
+  .partners-empty { text-align: center; padding: 4rem 2rem; }
+  .partners-empty-icon { display: flex; justify-content: center; margin-bottom: 1.25rem; color: var(--color-text-muted); opacity: 0.5; }
+  .partners-empty h2 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .partners-empty p { font-size: 0.9375rem; color: var(--color-text-muted); }
+
+  .partners-cta { margin-top: 3rem; padding: 3rem; border-radius: var(--radius-lg); text-align: center; }
+  .partners-cta-content { max-width: 480px; margin: 0 auto; }
+  .partners-cta-content h2 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .partners-cta-content p { font-size: 1rem; color: var(--color-text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+
+  @media (max-width: 48em) {
+    .partners-featured-grid { grid-template-columns: 1fr; }
+    .partners-grid { grid-template-columns: 1fr; }
+    .partners-cta { padding: 2rem 1.5rem; }
+  }
+</style>

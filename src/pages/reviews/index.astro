@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ReviewCard from '../../components/cards/ReviewCard.astro';
-import { client, REVIEWS_QUERY } from '../../lib/sanity';
+import { client, REVIEWS_QUERY, urlFor } from '../../lib/sanity';
 import type { Review } from '../../lib/sanity';
 
 const reviews: Review[] = await client.fetch(REVIEWS_QUERY);
@@ -13,13 +13,14 @@ const reviews: Review[] = await client.fetch(REVIEWS_QUERY);
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Reviews</h1>
       <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Honest, in-depth reviews of the leading CRE software platforms and services.</p>
       <div class="reviews-grid">
-        {reviews.map(r => <ReviewCard title={r.title} slug={r.slug.current} productName={r.productName} rating={r.rating} author={r.author} date={r.date} />)}
+        {reviews.map(r => <ReviewCard title={r.title} slug={r.slug.current} productName={r.productName} rating={r.rating} author={r.author} date={r.date} image={r.image ? urlFor(r.image).width(400).url() : undefined} />)}
       </div>
     </div>
   </section>
 </PageLayout>
 
 <style>
+  .reviews-page { padding-top: calc(var(--header-height) + 2rem); }
   .reviews-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

@@ -12,6 +12,8 @@ import event from './sanity/schemas/event'
 import page from './sanity/schemas/page'
 import market from './sanity/schemas/market'
 import sector from './sanity/schemas/sector'
+import term from './sanity/schemas/term'
+import partner from './sanity/schemas/partner'
 
 export default defineConfig({
   name: 'brick-wire',
@@ -23,6 +25,6 @@ export default defineConfig({
   plugins: [structureTool(), visionTool()],
 
   schema: {
-    types: [blockContent, brief, newsletter, review, podcastEpisode, testimonial, marketReport, event, page, market, sector],
+    types: [blockContent, brief, newsletter, review, podcastEpisode, testimonial, marketReport, event, page, market, sector, term, partner],
   },
 })

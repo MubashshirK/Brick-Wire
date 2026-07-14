@@ -1,7 +1,8 @@
++
 ---
 import TextSlider from '../blocks/TextSlider.astro';
 import { NEWSLETTER_WORDS, SITE } from '../../lib/constants';
-import { client, NEWSLETTERS_QUERY } from '../../lib/sanity';
+import { client, NEWSLETTERS_QUERY, urlFor } from '../../lib/sanity';
 import type { Newsletter } from '../../lib/sanity';
 
 const newsletters: Newsletter[] = await client.fetch(NEWSLETTERS_QUERY);
@@ -9,6 +10,7 @@ const issues = newsletters.slice(0, 6).map(n => ({
   title: n.title,
   edition: n.edition.charAt(0).toUpperCase() + n.edition.slice(1).replace('-', ' '),
   date: new Date(n.issueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+  image: n.image || null,
 }));
 ---
 
@@ -41,7 +43,9 @@ const issues = newsletters.slice(0, 6).map(n => ({
         <div class="issues-slider">
           {issues.map(issue => (
             <a href="#" class="issue-card">
-              <div class="issue-card__image"></div>
+              <div class="issue-card__image">
+                {issue.image && <img src={urlFor(issue.image).width(160).height(120).url()} alt={issue.title} class="issue-card__img" />}
+              </div>
               <div class="issue-card__content">
                 <span class="issue-edition">{issue.edition}</span>
                 <h3 class="issue-title">{issue.title}</h3>
@@ -166,6 +170,16 @@ const issues = newsletters.slice(0, 6).map(n => ({
     border-radius: 0.5rem;
     background: rgba(255,255,255,0.1);
     flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .issue-card__img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
   }
   .issue-edition {
     font-size: 0.6875rem;

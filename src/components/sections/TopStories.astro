@@ -4,12 +4,6 @@ import type { Brief } from '../../lib/sanity';
 const allBriefs: Brief[] = await client.fetch(BRIEFS_QUERY);
 const featuredStory = allBriefs[0] || null;
 const stories = allBriefs.slice(1, 6);
-const tools = [
-  { title: 'Multifamily Investment Stress Testing: A Must-Have Tool for Passive Investors', category: 'Multifamily', subcategory: 'Tools', date: 'April 01, 2025', slug: 'multifamily-investment-stress-testing' },
-  { title: 'Return on Investment (ROI) Calculator: Your Guide to Maximizing Profits', category: 'Multifamily', subcategory: 'Tools', date: 'December 05, 2023', slug: 'roi-calculator-multifamily' },
-  { title: 'Loan Sizing Calculator: How Lenders Determine Your Commercial Real Estate Loan', category: 'Multifamily', subcategory: 'Tools', date: 'December 05, 2023', slug: 'loan-sizing-calculator' },
-  { title: 'Loan Amortization Calculator: A Guide to Amortization Tables', category: 'Models', subcategory: 'Tools', date: 'December 05, 2023', slug: 'loan-amortization-calculator' },
-];
 ---
 
 <section class="top-stories-section">
@@ -18,10 +12,6 @@ const tools = [
       <div class="top-stories-header">
         <h2 class="top-stories-title">TOP STORIES</h2>
         <div class="top-stories-accent"></div>
-      </div>
-      <div class="tools-header">
-        <h2 class="tools-title">RESOURCES & TOOLS</h2>
-        <div class="tools-accent"></div>
       </div>
     </div>
 
@@ -78,28 +68,6 @@ const tools = [
         ))}
         <span class="cta-wrap"><a href="/briefs/" class="cta-link">View All Briefs</a></span>
       </div>
-
-      <!-- Column 3: Resources & Tools (35%) -->
-      <div class="col-tools">
-        <div class="tools-list">
-          {tools.map(tool => (
-            <a href={`/tools/${tool.slug}/`} class="tool-row">
-              <div class="tool-row__body">
-                <div class="card__tags">
-                  <span class="tag">{tool.category}</span>
-                  <span class="tag tag--muted">{tool.subcategory}</span>
-                </div>
-                <h4 class="tool-row__title">{tool.title}</h4>
-                <span class="card__date">{tool.date}</span>
-              </div>
-              <div class="tool-row__thumb">
-                <img src={tool.image} alt="" loading="lazy" />
-              </div>
-            </a>
-          ))}
-        </div>
-        <span class="cta-wrap"><a href="/tools/" class="cta-link">View More</a></span>
-      </div>
     </div>
   </div>
 </section>
@@ -147,33 +115,12 @@ const tools = [
     border-radius: 2px;
   }
 
-  .tools-header {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 calc(35% - 1.25rem);
-  }
-
-  .tools-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.375rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    color: #111019;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .tools-accent {
-    width: 70px;
-    height: 3px;
-    background: #ca4825;
-    border-radius: 2px;
-  }
+  
 
   /* 3-column row: 35 | 30 | 35 */
   .top-stories-row {
     display: grid;
-    grid-template-columns: 35fr 30fr 35fr;
+    grid-template-columns: 58fr 42fr;
     gap: 2.5rem;
     align-items: start;
   }
@@ -191,18 +138,7 @@ const tools = [
     border-top: 1px solid #e7e7e7;
   }
 
-  /* Column 3 — Tools */
-  .col-tools {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid #e7e7e7;
-    padding-top: 0;
-  }
-
-  .tools-list {
-    display: flex;
-    flex-direction: column;
-  }
+  
 
   /* Shared Card Styles */
   .card {
@@ -357,60 +293,7 @@ const tools = [
     object-fit: cover;
   }
 
-  /* Tool row */
-  .tool-row {
-    display: flex;
-    align-items: center;
-    padding: 0.875rem 0;
-    border-bottom: 1px solid #e7e7e7;
-    text-decoration: none;
-    color: inherit;
-    gap: 0.875rem;
-    transition: opacity 0.15s ease;
-  }
-
-  .tool-row:hover {
-    opacity: 0.85;
-  }
-
-  .tool-row__body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .tool-row__title {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.35;
-    color: #111019;
-    margin: 0;
-  }
-
-  .tool-row:hover .tool-row__title {
-    color: #ca4825;
-  }
-
-  .tool-row__thumb {
-    width: 95px;
-    flex-shrink: 0;
-    aspect-ratio: 95 / 65;
-    position: relative;
-    overflow: hidden;
-    border-radius: 4px;
-    background: #f7f7f7;
-  }
-
-  .tool-row__thumb img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  
 
   /* CTA Links */
   .cta-link {
@@ -445,8 +328,7 @@ const tools = [
       gap: 1.5rem;
     }
 
-    .top-stories-header,
-    .tools-header {
+    .top-stories-header {
       flex: 0 0 calc(50% - 0.75rem);
     }
 
@@ -463,12 +345,6 @@ const tools = [
       border-top: none;
       padding-top: 0;
     }
-
-    .col-tools {
-      grid-column: 1 / -1;
-      border-top: 1px solid #e7e7e7;
-      padding-top: 2rem;
-    }
   }
 
   @media (max-width: 640px) {
@@ -481,8 +357,7 @@ const tools = [
       gap: 1.5rem;
     }
 
-    .top-stories-header,
-    .tools-header {
+    .top-stories-header {
       flex: none;
       width: 100%;
     }
@@ -495,10 +370,6 @@ const tools = [
       grid-column: auto;
     }
 
-    .col-tools {
-      grid-column: auto;
-    }
-
     .card--row {
       flex-direction: column-reverse;
       align-items: flex-start;
@@ -506,17 +377,6 @@ const tools = [
     }
 
     .card--row .card__thumb {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-    }
-
-    .tool-row {
-      flex-direction: column-reverse;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-
-    .tool-row__thumb {
       width: 100%;
       aspect-ratio: 16 / 9;
     }

@@ -22,7 +22,7 @@ function getColor(val: number): string {
 ---
 
 <PageLayout title="Fear & Greed Index" description="Measure market sentiment across commercial real estate sectors.">
-  <section class="section-padding">
+  <section class="fgi-page section-padding">
     <div class="container" style="max-width: var(--container-narrow);">
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Fear & Greed Index</h1>
       <p style="color: var(--color-text-muted); margin-bottom: 2rem;">A composite measure of commercial real estate market sentiment. 0 = Extreme Fear, 100 = Extreme Greed.</p>
@@ -58,6 +58,7 @@ function getColor(val: number): string {
 </PageLayout>
 
 <style>
+  .fgi-page { padding-top: calc(var(--header-height) + 2rem); }
   .composite-gauge {
     text-align: center;
     margin-bottom: 3rem;

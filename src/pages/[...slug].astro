@@ -1,45 +1,176 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { client, PAGE_QUERY, toHTMLBody } from '../lib/sanity';
+import { client, PAGE_QUERY, urlFor, toHTMLBody } from '../lib/sanity';
 import type { Page } from '../lib/sanity';
-export async function getStaticPaths() {
-  const pagesData: Page[] = await client.fetch(`*[_type == "page"] { slug }`);
-  return pagesData.map(p => ({ params: { slug: p.slug.current } }));
+
+export const prerender = false;
+
+function slugToTitle(s: string): string {
+  return s
+    .split(/[-_\/]/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
 }
+
 const { slug } = Astro.params;
 let pageData: Page | null = null;
 let bodyHTML = '';
-let pageTitle = 'Page';
+let pageTitle = '';
 let pageDesc = '';
-if (slug) {
-  pageData = await client.fetch(PAGE_QUERY, { slug });
-  if (pageData) {
-    pageTitle = pageData.title;
-    pageDesc = pageData.seoDescription || '';
-    bodyHTML = toHTMLBody(pageData.body);
+try {
+  if (slug) {
+    pageData = await client.fetch(PAGE_QUERY, { slug });
+    if (pageData) {
+      pageTitle = pageData.title;
+      pageDesc = pageData.seoDescription || '';
+      bodyHTML = toHTMLBody(pageData.body || []);
+    } else {
+      pageTitle = slugToTitle(slug);
+    }
   }
+} catch (e) {
+  console.error('Failed to fetch page data for slug:', slug, e);
+  if (slug) pageTitle = slugToTitle(slug);
 }
+
+const contactSlugs = ['contact-us', 'advertise'];
+const isContact = slug ? contactSlugs.includes(slug) : false;
 ---
 
 <PageLayout title={pageTitle} description={pageDesc}>
   <section class="static-page section-padding">
-    <div class="container" style="max-width: var(--container-narrow);">
-      <h1 class="static-title">{pageTitle}</h1>
-      {bodyHTML ? (
-        <div class="static-body" set:html={bodyHTML}></div>
-      ) : (
-        <div class="static-body">
-          <p>This page is coming soon. Content will be managed through the Brick Wire CMS.</p>
-          <p>In the meantime, feel free to <a href="/contact-us/">contact us</a> with any questions.</p>
+    <div class="container">
+      {pageData?.image && (
+        <div class="static-hero">
+          <img src={urlFor(pageData.image).width(1200).height(400).url()} alt={pageTitle} class="static-hero-img" />
         </div>
       )}
+      <div class="static-content">
+        <h1 class="static-title">{pageTitle}</h1>
+
+        {pageDesc && (
+          <p class="static-description">{pageDesc}</p>
+        )}
+
+        {bodyHTML ? (
+          <div class="static-body" set:html={bodyHTML}></div>
+        ) : (
+          <div class="static-body static-body--empty">
+            <div class="static-empty-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <p>This page is coming soon. Content will be managed through the Brick Wire CMS.</p>
+            <p>In the meantime, feel free to <a href="/contact-us/">contact us</a> with any questions.</p>
+          </div>
+        )}
+
+        {isContact && (
+          <div class="static-contact section-light">
+            <div class="static-contact-grid">
+              <div class="static-contact-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <h3>Email Us</h3>
+                <p><a href="mailto:hello@brickwire.com">hello@brickwire.com</a></p>
+              </div>
+              <div class="static-contact-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <h3>Visit Us</h3>
+                <p>Brick Wire HQ, New York, NY</p>
+              </div>
+              <div class="static-contact-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <h3>Social</h3>
+                <p>Follow us on <a href="https://linkedin.com/company/brickwire" target="_blank">LinkedIn</a> and <a href="https://x.com/brickwire" target="_blank">X</a></p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   </section>
 </PageLayout>
 
 <style>
   .static-page { padding-top: calc(var(--header-height) + 2rem); }
-  .static-title { font-size: var(--fs-heading-1); margin-bottom: 1.5rem; }
-  .static-body p { font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; color: var(--color-text-body); }
-  .static-body a { color: var(--color-accent); }
+
+  .static-hero { margin-bottom: 2rem; border-radius: var(--radius-lg); overflow: hidden; max-width: var(--container-max); }
+  .static-hero-img { width: 100%; aspect-ratio: 3/1; object-fit: cover; }
+
+  .static-content { max-width: var(--container-narrow); margin: 0 auto; }
+
+  .static-breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.8125rem; color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .static-breadcrumb a { color: var(--color-text-muted); transition: color var(--transition-fast); }
+  .static-breadcrumb a:hover { color: var(--color-accent); }
+  .static-breadcrumb svg { flex-shrink: 0; color: var(--color-border); }
+
+  .static-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-heading-1);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .static-description {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .static-body p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-body);
+  }
+  .static-body a {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .static-body a:hover { text-decoration: underline; }
+  .static-body h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 2.5rem 0 1rem;
+    color: var(--color-text-primary);
+  }
+  .static-body h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--color-text-primary);
+  }
+  .static-body ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  .static-body li { font-size: 1.125rem; line-height: 1.8; color: var(--color-text-body); list-style: disc; }
+  .static-body blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+  .static-body strong { font-weight: 700; color: var(--color-text-primary); }
+
+  .static-body--empty { text-align: center; padding: 3rem 0; }
+  .static-empty-icon { display: flex; justify-content: center; margin-bottom: 1.5rem; color: var(--color-text-muted); opacity: 0.4; }
+
+  .static-contact { margin-top: 3rem; padding: 2rem; border-radius: var(--radius-lg); }
+  .static-contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .static-contact-item { text-align: center; }
+  .static-contact-item svg { color: var(--color-accent); margin-bottom: 0.75rem; }
+  .static-contact-item h3 { font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 0.375rem; }
+  .static-contact-item p { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.5; }
+
+  @media (max-width: 48em) {
+    .static-contact-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .static-hero-img { aspect-ratio: 16/9; }
+  }
 </style>

@@ -148,21 +148,21 @@ export const TESTIMONIALS = [
 ];
 
 export const LOGOS = [
-  { name: 'CBRE', src: '/images/logos/cbre.webp' },
-  { name: 'JLL', src: '/images/logos/jll.webp' },
-  { name: 'Colliers', src: '/images/logos/colliers.webp' },
-  { name: 'Prologis', src: '/images/logos/prologis.webp' },
-  { name: 'Blackstone', src: '/images/logos/blackstone.webp' },
-  { name: 'CoStar', src: '/images/logos/costar.webp' },
+  { name: 'CBRE' },
+  { name: 'JLL' },
+  { name: 'Colliers' },
+  { name: 'Prologis' },
+  { name: 'Blackstone' },
+  { name: 'CoStar' },
 ];
 
 export const GRID_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='804' height='585' fill='none' viewBox='0 0 804 585'%3E%3Cpath stroke='%23faedec' stroke-miterlimit='10' d='M161.5.5v584M214.5.5v584M.5.5v584M268.5.5v584M54.5.5v584M321.5.5v584M107.5.5v584M375.5.5v584M161.5.5v584M428.5.5v584M482.5.5v584M536.5.5v584M589.5.5v584M643.5.5v584M696.5.5v584M750.5.5v584M803.5.5v584M.5 53.5h803M.5 214.5h803M.5 53.5h803M.5 107.5h803M.5 268.5h803M.5 161.5h803M.5.5h803M.5 321.5h803M.5 375.5h803M.5 428.5h803M.5 482.5h803M.5 535.5h803M.5 584.5h803'/%3E%3C/svg%3E`;
 
 export const BUYERS_GUIDES = [
-  { title: 'Best CRE Marketing Software for 2025', path: '/reviews/best-cre-marketing-software/' },
-  { title: 'Best Investment Management Software for 2025', path: '/reviews/best-investment-management-software/' },
-  { title: 'Best Commercial Real Estate CRMs for 2025', path: '/reviews/best-cre-crms/' },
-  { title: 'Best Real Estate Crowdfunding Platforms for 2025', path: '/reviews/best-crowdfunding-platforms/' },
-  { title: 'Best Multifamily Property Management Solutions for 2025', path: '/reviews/best-multifamily-management/' },
-  { title: 'Best Commercial Real Estate Data Sources for 2025', path: '/reviews/best-cre-data-sources/' },
+  { title: 'Best Marketing Software for 2026', path: '/reviews/crexi-review/' },
+  { title: 'Best Investment Management Software for 2026', path: '/reviews/dealpath-review/' },
+  { title: 'Best Commercial Real Estate CRMs for 2026', path: '/reviews/apto-review/' },
+  { title: 'Best Real Estate Crowdfunding Platforms for 2026', path: '/reviews/realtymogul-review/' },
+  { title: 'Best Multifamily Property Management Solutions for 2026', path: '/reviews/reonomy-review/' },
+  { title: 'Best Commercial Real Estate Data Sources for 2026', path: '/reviews/costar-suite-review/' },
 ];

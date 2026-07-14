@@ -7,7 +7,7 @@ const reports: MarketReport[] = await client.fetch(MARKET_REPORTS_QUERY);
 ---
 
 <PageLayout title="Market Reports" description="Quarterly and special reports on commercial real estate market conditions across the United States.">
-  <section class="section-padding">
+  <section class="market-reports-page section-padding">
     <div class="container">
       <h1 style="font-size: var(--fs-heading-1); margin-bottom: 0.5rem;">Market Reports</h1>
       <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Quarterly and special reports on CRE market conditions across the US.</p>
@@ -26,6 +26,7 @@ const reports: MarketReport[] = await client.fetch(MARKET_REPORTS_QUERY);
 </PageLayout>
 
 <style>
+  .market-reports-page { padding-top: calc(var(--header-height) + 2rem); }
   .reports-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

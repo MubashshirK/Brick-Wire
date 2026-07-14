@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ArticleCard from '../../components/cards/ArticleCard.astro';
-import { client, BRIEFS_QUERY } from '../../lib/sanity';
+import { client, BRIEFS_QUERY, urlFor } from '../../lib/sanity';
 import type { Brief } from '../../lib/sanity';
 
 const briefs: Brief[] = await client.fetch(BRIEFS_QUERY);
@@ -40,13 +40,14 @@ const briefs: Brief[] = await client.fetch(BRIEFS_QUERY);
         </div>
       </div>
       <div class="briefs-list">
-        {briefs.map(s => <ArticleCard title={s.title} slug={s.slug.current} date={s.date} category={s.sector?.name} excerpt={s.excerpt} />)}
+        {briefs.map(s => <ArticleCard title={s.title} slug={s.slug.current} date={s.date} category={s.sector?.name} excerpt={s.excerpt} image={s.image ? urlFor(s.image).width(320).url() : undefined} />)}
       </div>
     </div>
   </section>
 </PageLayout>
 
 <style>
+  .briefs-page { padding-top: calc(var(--header-height) + 2rem); }
   .briefs-header {
     margin-bottom: 2.5rem;
   }
