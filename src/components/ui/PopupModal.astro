@@ -111,7 +111,7 @@
 
       try {
         const fd = new FormData(form);
-        const resp = await fetch('/api/subscribe', { method: 'POST', body: fd });
+        const resp = await fetch('/api/newsletter-subscribe', { method: 'POST', body: fd });
         if (resp.redirected || resp.ok) {
           if (formContent) formContent.hidden = true;
           if (successContent) successContent.hidden = false;
